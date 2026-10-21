@@ -101,6 +101,7 @@ class SwipeFragment : Fragment() {
         binding.controlsBar.applySystemBarInsets(bottom = true)
 
         binding.cardStack.listener = stackListener
+        binding.backButton.setOnClickListener { findNavController().navigateUp() }
         binding.buttonDelete.setOnClickListener {
             binding.cardStack.swipeProgrammatically(SwipeDecision.DELETE)
         }
@@ -159,12 +160,19 @@ class SwipeFragment : Fragment() {
         binding.progressBar.progress = state.seen
 
         val showStatus = state.empty || state.finished
+        binding.loadingPanel.isVisible = state.loading
         binding.statusPanel.isVisible = showStatus
         binding.statusText.text = if (state.empty) {
             getString(R.string.swipe_empty)
         } else {
-            getString(R.string.swipe_finished, state.seen)
+            getString(R.string.swipe_finished_title)
         }
+        binding.statusSubtitle.text = if (state.empty) {
+            getString(R.string.swipe_empty_body)
+        } else {
+            getString(R.string.swipe_finished_body)
+        }
+        binding.statusTipCard.isVisible = state.finished
         // 只有「看完了」才有可结算的东西；空范围该做的是换个范围。
         binding.statusSettle.isVisible = state.finished
         // 提前结束的入口，与上面那个「查看结算」互斥（finished 时它消失）。
@@ -174,7 +182,9 @@ class SwipeFragment : Fragment() {
             !state.loading && !state.empty && !state.finished && state.seen > 0
         // 用 INVISIBLE 而不是 GONE：提示行还占着高度，卡片区的可用空间才不会因为
         // 状态面板出现而变一次，卡片也就不会重新按新尺寸量一遍。
-        binding.hintRow.visibility = if (showStatus) View.INVISIBLE else View.VISIBLE
+        val hideChrome = showStatus || state.loading
+        binding.hintRow.visibility = if (hideChrome) View.INVISIBLE else View.VISIBLE
+        binding.controlsBar.visibility = if (hideChrome) View.INVISIBLE else View.VISIBLE
 
         binding.trashBadge.isVisible = state.pendingDeleteCount > 0
         binding.trashBadge.text = state.pendingDeleteCount.toString()
@@ -233,15 +243,20 @@ class SwipeFragment : Fragment() {
         binding.buttonKeep.isEnabled = canSwipe
         binding.buttonUndo.isEnabled = canUndo
         binding.endButton.isEnabled = canEnd
-        setDimmed(binding.buttonDelete, !canSwipe)
-        setDimmed(binding.buttonKeep, !canSwipe)
-        setDimmed(binding.buttonUndo, !canUndo)
-        setDimmed(binding.endButton, !canEnd)
-    }
 
-    /** 灰掉不可点的按钮。ImageView 没有状态列表，disable 不会自己变灰。 */
-    private fun setDimmed(view: View, dimmed: Boolean) {
-        view.alpha = if (dimmed) 0.4f else 1f
+        val context = requireContext()
+        binding.labelDelete.setTextColor(
+            context.getColor(if (canSwipe) R.color.delete_red_text else R.color.text_disabled),
+        )
+        binding.labelUndo.setTextColor(
+            context.getColor(if (canUndo) R.color.text_secondary else R.color.text_disabled),
+        )
+        binding.labelKeep.setTextColor(
+            context.getColor(if (canSwipe) R.color.keep_green_text else R.color.text_disabled),
+        )
+        binding.endButton.setTextColor(
+            context.getColor(if (canEnd) R.color.text_secondary else R.color.text_disabled),
+        )
     }
 
     /**

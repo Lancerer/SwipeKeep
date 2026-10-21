@@ -242,7 +242,7 @@
         -->
         <TextView
             android:id="@+id/ctaConfirm"
-            style="@style/Text.RowTitle"
+            style="@style/Text.Button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/cta_h"
             android:layout_marginTop="28dp"
@@ -250,16 +250,14 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="@dimen/cta_text"
-            android:textStyle="bold"
+            android:textColor="@color/cta_primary_text"
             android:visibility="gone"
             tools:text="确认删除 182 张"
             tools:visibility="visible" />
 
         <TextView
             android:id="@+id/ctaNext"
-            style="@style/Text.RowTitle"
+            style="@style/Text.Button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/cta_h"
             android:layout_marginTop="12dp"
@@ -268,13 +266,11 @@
             android:focusable="true"
             android:gravity="center"
             android:text="@string/settle_cta_next"
-            android:textColor="@color/white"
-            android:textSize="@dimen/cta_text"
-            android:textStyle="bold" />
+            android:textColor="@color/cta_primary_text" />
 
         <TextView
             android:id="@+id/ctaTrash"
-            style="@style/Text.RowTitle"
+            style="@style/Text.Button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/cta_secondary_h"
             android:layout_marginTop="12dp"
@@ -282,6 +278,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
+            android:textColor="@color/cta_secondary_text"
             android:textSize="@dimen/cta_secondary_text"
             tools:text="查看回收站（12）" />
     </LinearLayout>

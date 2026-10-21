@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  阶段 1 对照页用的占位图（还没有真照片可加载）。
-  近似设计图 01 里那张天空/草地示例图：天蓝 → 云白 → 草绿。
-  阶段 3 起由 Coil 加载真实 MediaStore 缩略图替换。
--->
+<!-- 照片加载前的暖色占位，不再使用高饱和渐变 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <gradient
-        android:angle="270"
-        android:startColor="#7FC8F8"
-        android:centerColor="#D9F0FF"
-        android:endColor="#8CCB8E"
-        android:type="linear" />
+    <solid android:color="@color/surface_neutral" />
     <corners android:radius="@dimen/card_photo_corner" />
 </shape>

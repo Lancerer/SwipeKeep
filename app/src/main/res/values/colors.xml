@@ -1,32 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 色值取自 docs/产品图/*.svg，是视觉唯一依据 -->
+    <!-- 品牌与语义色 -->
     <color name="bg_cream">#FAF7F2</color>
     <color name="brand_orange">#FF6B35</color>
-    <color name="delete_red">#F5484D</color>
-    <color name="keep_green">#2EBD6B</color>
-    <color name="ink">#191816</color>
-    <color name="text_secondary">#8A8580</color>
-    <color name="card_stroke">#EDE6DC</color>
-    <color name="track">#EFE8DE</color>
-    <color name="tip_bg">#FFF0E5</color>
-    <color name="tip_text">#B0723F</color>
-    <color name="toast_bg">#EB191816</color>
-    <color name="toast_text">#FFFFFF</color>
-    <color name="toast_action">#FFB36B</color>
-    <color name="pill_recommend_bg">#FFF0E8</color>
+    <color name="brand_orange_pressed">#E85A28</color>
+    <color name="ink">#26231F</color>
+    <color name="text_secondary">#8C857D</color>
+    <color name="text_disabled">#A69D93</color>
+    <color name="divider">#EDE6DD</color>
+    <color name="card_stroke">#EDE6DD</color>
+    <color name="track">#EDE6DD</color>
+    <color name="chevron">#C9C1B7</color>
+    <color name="chevron_disabled">#DDD5CB</color>
+    <color name="keep_green">#25B96A</color>
+    <color name="keep_green_text">#16824B</color>
+    <color name="keep_green_soft">#EFFAF4</color>
+    <color name="delete_red">#FF3B30</color>
+    <color name="delete_red_text">#C7362D</color>
+    <color name="delete_red_soft">#FFF0EF</color>
+
+    <!-- 表面 -->
+    <color name="white">#FFFFFFFF</color>
+    <color name="surface_soft">#FFF3EA</color>
+    <color name="surface_soft_pressed">#FBE8DA</color>
+    <color name="surface_neutral">#F5EFE8</color>
+    <color name="surface_neutral_pressed">#EBE3D9</color>
+    <color name="surface_disabled">#EFE9E1</color>
+    <color name="surface_neutral_disabled">#D8D1C7</color>
+    <color name="success_soft">#E8F7EE</color>
+
+    <!-- 药丸 -->
+    <color name="pill_recommend_bg">#FFE9DC</color>
+    <color name="pill_recommend_text">#E85A28</color>
+    <color name="pill_soon_bg">#F2ECE5</color>
+    <color name="pill_soon_text">#8C857D</color>
+    <!-- 预留的「智能」能力，暂未开放 -->
     <color name="pill_smart_bg">#E8F1FF</color>
     <color name="pill_smart_text">#4A7FC1</color>
-    <color name="undo_btn_bg">#F0EAE2</color>
-    <color name="divider">#D8D1C7</color>
 
-    <!--
-      滑卡遮罩。设计图 02 的盖层是「卡片同色 22%」，这里把 22% 直接编进色值（0x38 = 56/255 ≈ 22%），
-      View 自己的 alpha 就专心当「滑了多少」的驱动量，不必再乘一个常数。
-    -->
-    <color name="scrim_delete">#38F5484D</color>
-    <color name="scrim_keep">#382EBD6B</color>
+    <!-- 范围图标底色 -->
+    <color name="tile_blue">#6FB6F5</color>
+    <color name="tile_purple">#C9B8F5</color>
+    <color name="tile_green">#8FD3A8</color>
+    <color name="tile_orange">#FFB36B</color>
+    <color name="tile_pink">#F6A6C1</color>
 
-    <color name="white">#FFFFFFFF</color>
+    <!-- 提示 / 浮层 -->
+    <color name="tip_bg">#FFF3EA</color>
+    <color name="tip_text">#8A5A2B</color>
+    <color name="toast_bg">#E626231F</color>
+    <color name="toast_text">#FFFFFF</color>
+    <color name="toast_action">#FFB36B</color>
+
+    <!-- 滑卡遮罩：22% 语义色，alpha 已编入色值 -->
+    <color name="scrim_delete">#38FF3B30</color>
+    <color name="scrim_keep">#3825B96A</color>
+
+    <!-- 兼容旧资源名的别名 -->
+    <color name="undo_btn_bg">#F5EFE8</color>
     <color name="black">#FF000000</color>
 </resources>

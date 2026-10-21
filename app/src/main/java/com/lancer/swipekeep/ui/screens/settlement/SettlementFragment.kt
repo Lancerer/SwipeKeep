@@ -206,9 +206,8 @@ class SettlementFragment : Fragment() {
             if (primary) R.drawable.bg_cta_primary else R.drawable.bg_cta_secondary,
         )
         view.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                if (primary) R.color.white else R.color.ink,
+            requireContext().getColorStateList(
+                if (primary) R.color.cta_primary_text else R.color.cta_secondary_text,
             ),
         )
         view.setTextSize(

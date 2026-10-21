@@ -107,7 +107,7 @@ class TrashFragment : Fragment() {
     private fun render(state: TrashViewModel.UiState) {
         adapter.submitList(state.photos)
         binding.trashCount.text = getString(R.string.trash_count, state.photos.size)
-        binding.emptyText.isVisible = state.empty
+        binding.emptyPanel.isVisible = state.empty
         // 列表为空时把提示条也收起来：空页面上再说「7 天后自动清除」没有意义。
         binding.trashTip.isVisible = !state.empty
 

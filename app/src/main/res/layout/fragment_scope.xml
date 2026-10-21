@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  选择清理范围（设计图 05）。
-
-  布局取舍：顶栏 / 存储卡 / 分组标题是**静态的**，月份与范围行一起放进一个 RecyclerView。
-  设计图里这些都在同一屏内，但真实相册的月份可能有几十个、必然要滚 —— 让静态头部留在
-  原位、只让列表滚，用户翻月份时始终看得到「选择要清理的范围」这个上下文。
+  首页 / 选择清理范围。
+  静态头部（标题、存储卡、分组标题）固定，只有范围与月份列表滚动。
 -->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,10 +11,12 @@
     android:layout_height="match_parent"
     android:background="@color/bg_cream">
 
+    <!-- ============ 顶部：标题 + 设置 ============ -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingHorizontal="@dimen/screen_padding_h"
         android:paddingTop="@dimen/screen_padding_top"
@@ -41,32 +40,27 @@
                 android:layout_width="@dimen/title_underline_w"
                 android:layout_height="@dimen/title_underline_h"
                 android:layout_marginTop="@dimen/title_underline_gap"
-                android:background="@color/brand_orange" />
+                android:background="@drawable/bg_title_underline" />
         </LinearLayout>
 
-        <ImageView
+        <ImageButton
             android:id="@+id/settingsButton"
             android:layout_width="@dimen/icon_btn_size"
             android:layout_height="@dimen/icon_btn_size"
-            android:layout_gravity="top"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/cd_settings"
-            android:padding="5dp"
+            android:padding="12dp"
             android:src="@drawable/ic_settings"
             app:tint="@color/ink" />
     </LinearLayout>
 
-    <!--
-      没有相册权限时显示的替代内容。刻意**不藏起顶栏** —— 用户至少要知道自己在哪个 App 里。
-      这个面板是阶段 2 的临时形态（`pm grant` 在 MIUI 上被拦，没它就没法验证数据链路）；
-      阶段 7 会把它提升成独立的引导页 + 拒绝页，并在 34+ 上加 PARTIAL 横幅。
-    -->
+    <!-- ============ 权限面板 ============ -->
     <LinearLayout
         android:id="@+id/permissionPanel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/screen_padding_h"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="48dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:visibility="gone"
@@ -75,51 +69,51 @@
         app:layout_constraintTop_toBottomOf="@id/topBar"
         tools:visibility="gone">
 
+        <ImageView
+            android:layout_width="@dimen/permission_icon_size"
+            android:layout_height="@dimen/permission_icon_size"
+            android:background="@drawable/bg_status_icon"
+            android:contentDescription="@null"
+            android:padding="17dp"
+            android:src="@drawable/ic_scope_all"
+            app:tint="@color/brand_orange" />
+
         <TextView
             style="@style/Text.SectionLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_5"
             android:text="@string/permission_denied_title" />
 
         <TextView
-            style="@style/Text.Secondary"
+            style="@style/Text.Body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/space_2"
             android:gravity="center"
-            android:text="@string/permission_denied_body" />
+            android:text="@string/permission_denied_body"
+            android:textColor="@color/text_secondary" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/permissionRetryButton"
-            style="@style/Widget.Material3.Button"
+            style="@style/Widget.SwipeKeep.Cta.Primary"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/cta_h"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/bg_cta_primary"
-            android:text="@string/permission_retry"
-            android:textColor="@color/white"
-            android:textSize="@dimen/cta_text"
-            android:textStyle="bold"
-            app:backgroundTint="@null"
-            app:cornerRadius="@dimen/cta_corner" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_6"
+            android:text="@string/permission_retry" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/permissionSettingsButton"
-            style="@style/Widget.Material3.Button.OutlinedButton"
+            style="@style/Widget.SwipeKeep.Cta.Secondary"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/cta_secondary_h"
-            android:layout_marginTop="12dp"
-            android:text="@string/permission_go_settings"
-            android:textColor="@color/ink"
-            android:textSize="@dimen/cta_secondary_text" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_3"
+            android:text="@string/permission_go_settings" />
     </LinearLayout>
 
     <!--
-      上次没做完的清理（重开 App 后持久化读回来的）。
-
-      外面这层 `pendingBanner` 只负责显隐，**它自己不带任何 margin** —— 内部那行才带 20dp 上边距。
-      直接给可显隐的 View 加 marginTop 会漏：View 变成 GONE 之后它自己的 margin 仍然参与
-      ConstraintLayout 的定位，于是下面的存储卡会凭空多出 20dp 的空隙。
+      上次没做完的清理。外层只负责显隐且不带 margin；
+      间距放在内层卡片上，避免 GONE 后仍参与定位。
     -->
     <FrameLayout
         android:id="@+id/pendingBanner"
@@ -131,75 +125,106 @@
         app:layout_constraintTop_toBottomOf="@id/topBar"
         tools:visibility="visible">
 
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/screen_padding_h"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/bg_tip"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="18dp"
-            android:paddingEnd="10dp"
-            android:paddingVertical="12dp">
+            android:layout_marginTop="@dimen/space_4"
+            app:cardBackgroundColor="@color/surface_soft"
+            app:cardCornerRadius="@dimen/panel_corner"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
 
-            <TextView
-                android:id="@+id/pendingText"
-                style="@style/Text.RowSubtitle"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/tip_text"
-                tools:text="上次有 128 张待删除" />
+                android:orientation="vertical"
+                android:padding="@dimen/space_4">
 
-            <TextView
-                android:id="@+id/pendingResume"
-                style="@style/Text.RowTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="6dp"
-                android:text="@string/scope_pending_resume"
-                android:textColor="@color/brand_orange" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/pendingDiscard"
-                style="@style/Text.RowTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="6dp"
-                android:text="@string/scope_pending_discard"
-                android:textColor="@color/text_secondary" />
-        </LinearLayout>
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_history"
+                        app:tint="@color/brand_orange" />
+
+                    <TextView
+                        android:id="@+id/pendingText"
+                        style="@style/Text.Secondary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_3"
+                        android:layout_weight="1"
+                        android:maxLines="2"
+                        android:textColor="@color/tip_text"
+                        tools:text="上次有 128 张待删除" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_1"
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/pendingDiscard"
+                        style="@style/Text.Secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingHorizontal="@dimen/space_2"
+                        android:paddingVertical="6dp"
+                        android:text="@string/scope_pending_discard"
+                        android:textColor="@color/text_secondary" />
+
+                    <TextView
+                        android:id="@+id/pendingResume"
+                        style="@style/Text.RowTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_1"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingHorizontal="@dimen/space_2"
+                        android:paddingVertical="6dp"
+                        android:text="@string/scope_pending_resume"
+                        android:textColor="@color/brand_orange" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </FrameLayout>
 
+    <!-- ============ 存储卡 ============ -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/storageCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/screen_padding_h"
-        android:layout_marginTop="20dp"
-        app:cardBackgroundColor="@color/white"
+        android:layout_marginTop="@dimen/space_4"
+        app:cardBackgroundColor="@color/surface_soft"
         app:cardCornerRadius="@dimen/panel_corner"
-        app:cardElevation="@dimen/panel_elevation"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pendingBanner">
+        app:layout_constraintTop_toBottomOf="@id/pendingBanner"
+        app:strokeWidth="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="20dp">
+            android:padding="@dimen/space_4">
 
             <com.lancer.swipekeep.ui.widget.DonutProgressView
                 android:id="@+id/storageDonut"
@@ -209,24 +234,24 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/space_3"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/storageUsed"
-                    style="@style/Text.RowTitle"
+                    style="@style/Text.BodyMedium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="已用 96.4 GB / 128 GB" />
+                    tools:text="已用 78 GB / 115 GB" />
 
                 <TextView
                     android:id="@+id/storageAdvice"
-                    style="@style/Text.RowSubtitle"
+                    style="@style/Text.Secondary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    tools:text="相册占 8.2 GB，挑出不要的就能腾地方" />
+                    android:layout_marginTop="@dimen/space_1"
+                    tools:text="相册占 423 MB，挑不要的就能腾地方" />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -237,7 +262,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/screen_padding_h"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="@dimen/space_6"
         android:text="@string/scope_pick_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -249,7 +274,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/screen_padding_h"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/space_6"
         android:gravity="center"
         android:text="@string/scope_empty"
         android:visibility="gone"
@@ -262,10 +287,10 @@
         android:id="@+id/rows"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/row_gap"
+        android:layout_marginTop="@dimen/space_3"
         android:clipToPadding="false"
         android:paddingHorizontal="@dimen/screen_padding_h"
-        android:paddingBottom="12dp"
+        android:paddingBottom="@dimen/space_3"
         app:layout_constraintBottom_toTopOf="@id/bottomBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -273,34 +298,25 @@
         tools:itemCount="4"
         tools:listitem="@layout/item_scope_row" />
 
-    <!--
-      底部容器单独一层：inset 加在容器上而不是按钮上。
-      加在按钮上会让 56dp 的按钮变成「56dp + 手势条高度」，看起来像被压扁了。
-    -->
+    <!-- ============ 底部 CTA ============ -->
     <LinearLayout
         android:id="@+id/bottomBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/screen_padding_h"
-        android:paddingTop="12dp"
-        android:paddingBottom="16dp"
+        android:paddingTop="@dimen/space_3"
+        android:paddingBottom="@dimen/space_5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/startButton"
-            style="@style/Widget.Material3.Button"
+            style="@style/Widget.SwipeKeep.Cta.Primary"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/cta_h"
-            android:background="@drawable/bg_cta_primary"
-            android:text="@string/cta_start"
-            android:textColor="@color/white"
-            android:textSize="@dimen/cta_text"
-            android:textStyle="bold"
-            app:backgroundTint="@null"
-            app:cornerRadius="@dimen/cta_corner" />
+            android:layout_height="wrap_content"
+            android:text="@string/cta_start" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

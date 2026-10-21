@@ -14,15 +14,16 @@
     android:layout_marginBottom="@dimen/row_gap"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="@dimen/row_corner"
-    app:cardElevation="@dimen/panel_elevation">
+    app:cardElevation="0dp"
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="10dp">
+        android:paddingHorizontal="@dimen/space_4"
+        android:paddingVertical="@dimen/space_3">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/thumb"
@@ -72,7 +73,7 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:paddingHorizontal="10dp"
+                android:paddingHorizontal="@dimen/space_2"
                 android:paddingVertical="6dp"
                 android:text="@string/trash_restore"
                 android:textColor="@color/brand_orange" />
@@ -85,10 +86,10 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:paddingHorizontal="10dp"
+                android:paddingHorizontal="@dimen/space_2"
                 android:paddingVertical="6dp"
                 android:text="@string/trash_delete_forever"
-                android:textColor="@color/delete_red" />
+                android:textColor="@color/delete_red_text" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

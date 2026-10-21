@@ -16,7 +16,8 @@
 
     <!-- 范围页 -->
     <string name="scope_storage_used">已用 %1$s / %2$s</string>
-    <string name="scope_storage_advice">相册占 %1$s，挑出不要的就能腾地方</string>
+    <string name="scope_storage_advice">相册占 %1$s，挑不要的腾地方</string>
+    <string name="scope_storage_advice_empty">相册是空的，去拍点照片吧</string>
     <string name="scope_storage_unavailable">存储信息暂不可用</string>
     <string name="scope_pick_title">选择要清理的范围</string>
     <string name="scope_all_photos">全部照片 · 从最近开始</string>
@@ -57,7 +58,13 @@
     <!-- 进度行里的范围标签：月份用 scope_month_format，全部照片用这一条 -->
     <string name="swipe_scope_all">全部照片</string>
     <string name="swipe_empty">这个范围里没有照片</string>
+    <string name="swipe_empty_body">换个范围试试，或者先拍几张照片</string>
     <string name="swipe_finished">已看完 %1$d 张</string>
+    <string name="swipe_finished_title">已经没有更多照片了</string>
+    <string name="swipe_finished_body">今天的清理任务完成啦</string>
+    <string name="swipe_loading">正在读取相册…</string>
+    <string name="swipe_tip_title">小贴士</string>
+    <string name="swipe_tip_body">定期清理照片可以释放存储空间，让手机运行更流畅哦~</string>
     <string name="swipe_back">返回</string>
     <!-- 看完了才出现：这时候值得看的不再是卡片，而是「这轮划出了什么」 -->
     <string name="swipe_view_settlement">查看结算</string>
@@ -116,6 +123,7 @@
     <!-- 回收站 -->
     <string name="trash_title">回收站</string>
     <string name="trash_empty">回收站是空的</string>
+    <string name="trash_empty_body">移入系统回收站的照片会出现在这里</string>
     <string name="trash_count">%1$d 张</string>
     <string name="trash_item_meta">%1$s · %2$s</string>
     <string name="trash_tip">回收站里的照片约 7 天后被系统自动清除，期间可随时恢复</string>

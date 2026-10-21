@@ -2,67 +2,143 @@
 <resources>
 
     <!--
-      注意：XML 里点号命名的样式会**隐式继承**同名前缀，所以 Text.Title 的父样式是 Text。
+      注意：XML 里点号命名的样式会隐式继承同名前缀，所以 Text.Title 的父样式是 Text。
       这个 Text 必须存在，否则 AAPT 会报 "resource style/Text not found"。
     -->
     <style name="Text">
         <item name="android:textColor">@color/ink</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:includeFontPadding">false</item>
     </style>
 
     <style name="Text.Title">
         <item name="android:textSize">@dimen/title_text</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="Text.SectionLabel">
         <item name="android:textSize">@dimen/section_label</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="Text.RowTitle">
         <item name="android:textSize">@dimen/row_title</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Text.Body">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Text.BodyMedium">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="Text.RowSubtitle">
         <item name="android:textSize">@dimen/row_subtitle</item>
         <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="Text.Secondary">
         <item name="android:textSize">@dimen/text_secondary</item>
         <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Text.Caption">
+        <item name="android:textSize">@dimen/card_caption_text</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="Text.Hint">
         <item name="android:textSize">@dimen/swipe_hint_text</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="Text.Pill">
         <item name="android:textSize">@dimen/pill_text</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Text.Button">
+        <item name="android:textSize">@dimen/cta_text</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Text.StatusTitle">
+        <item name="android:textSize">@dimen/status_title</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="Text.StatValue">
         <item name="android:textSize">@dimen/stat_value</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="Text.StatLabel">
         <item name="android:textSize">@dimen/stat_label</item>
         <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="Text.SettleTitle">
         <item name="android:textSize">@dimen/settle_title</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="Text.Stamp">
         <item name="android:textSize">@dimen/stamp_text</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- CTA 统一：MaterialButton 使用自定义 selector，禁用/按下不再靠 Kotlin 改 alpha -->
+    <style name="Widget.SwipeKeep.Cta.Primary" parent="Widget.Material3.Button">
+        <item name="android:background">@drawable/bg_cta_primary</item>
+        <item name="backgroundTint">@null</item>
+        <item name="cornerRadius">@dimen/cta_corner</item>
+        <item name="android:textColor">@color/cta_primary_text</item>
+        <item name="android:textSize">@dimen/cta_text</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:minHeight">@dimen/cta_h</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingStart">@dimen/space_6</item>
+        <item name="android:paddingEnd">@dimen/space_6</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="Widget.SwipeKeep.Cta.Secondary" parent="Widget.Material3.Button">
+        <item name="android:background">@drawable/bg_cta_secondary</item>
+        <item name="backgroundTint">@null</item>
+        <item name="cornerRadius">@dimen/cta_secondary_corner</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:textSize">@dimen/cta_secondary_text</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:minHeight">@dimen/cta_secondary_h</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingStart">@dimen/space_6</item>
+        <item name="android:paddingEnd">@dimen/space_6</item>
+        <item name="android:stateListAnimator">@null</item>
     </style>
 
     <!--

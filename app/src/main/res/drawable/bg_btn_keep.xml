@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-    <solid android:color="@color/white" />
-    <stroke
-        android:width="@dimen/btn_action_stroke"
-        android:color="@color/keep_green" />
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false">
+        <shape android:shape="oval">
+            <solid android:color="@color/white" />
+            <stroke
+                android:width="@dimen/btn_action_stroke"
+                android:color="@color/surface_neutral_disabled" />
+        </shape>
+    </item>
+    <item android:state_pressed="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/keep_green_soft" />
+            <stroke
+                android:width="@dimen/btn_action_stroke"
+                android:color="@color/keep_green" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/white" />
+            <stroke
+                android:width="@dimen/btn_action_stroke"
+                android:color="@color/keep_green" />
+        </shape>
+    </item>
+</selector>

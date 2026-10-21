@@ -15,7 +15,6 @@ import com.lancer.swipekeep.databinding.ItemPhotoCardBinding
 import com.lancer.swipekeep.domain.model.PhotoItem
 import com.lancer.swipekeep.ui.common.Formatters
 import kotlin.math.abs
-import kotlin.math.roundToInt
 
 /**
  * 一张照片卡片：照片 + 底部信息条 + 22% 遮罩 + 印章。
@@ -41,9 +40,6 @@ class PhotoCardView @JvmOverloads constructor(
     init {
         setCardBackgroundColor(color(R.color.white))
         radius = resources.getDimension(R.dimen.card_corner)
-        // 取整后至少 1px：1dp 在低密度屏上截成 0 会让整圈描边消失。
-        strokeWidth = resources.getDimension(R.dimen.card_stroke).roundToInt().coerceAtLeast(1)
-        strokeColor = color(R.color.card_stroke)
         cardElevation = resources.getDimension(R.dimen.card_elevation)
     }
 

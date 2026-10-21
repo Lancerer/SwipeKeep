@@ -187,8 +187,11 @@ class ScopeFragment : Fragment() {
         lastState = state
         adapter.submitList(state.rows)
         // 三个条件缺一不可：loading 未结束时不报空；没权限时由权限面板负责解释。
-        binding.emptyHint.isVisible = permissionGranted && !state.loading && state.totalCount == 0
-        binding.startButton.isEnabled = !state.loading && state.totalCount > 0
+        val hasPhotos = state.totalCount > 0
+        binding.emptyHint.isVisible = permissionGranted && !state.loading && !hasPhotos
+        // 相册为空时不再显示「0 张待清理」的假入口，直接把空状态交给提示文案。
+        binding.rows.isVisible = permissionGranted && hasPhotos
+        binding.startButton.isEnabled = !state.loading && hasPhotos
         renderPendingBanner()
 
         if (state.storage.totalBytes <= 0L) {
@@ -208,10 +211,14 @@ class ScopeFragment : Fragment() {
         )
         // 这里刻意不用「预计可释放 8 GB」那种文案：那个数字没有任何依据。
         // 相册实际占多少是真实的，也是用户唯一能判断「值不值得清」的信息。
-        binding.storageAdvice.text = getString(
-            R.string.scope_storage_advice,
-            Formatters.fileSize(requireContext(), state.albumBytes),
-        )
+        binding.storageAdvice.text = if (state.albumBytes == 0L) {
+            getString(R.string.scope_storage_advice_empty)
+        } else {
+            getString(
+                R.string.scope_storage_advice,
+                Formatters.fileSize(requireContext(), state.albumBytes),
+            )
+        }
     }
 
     private fun currentSortOrder(): SortOrder = viewModel.uiState.value.sortOrder

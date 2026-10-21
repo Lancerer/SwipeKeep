@@ -1,6 +1,7 @@
 package com.lancer.swipekeep.ui.screens.scope
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -16,9 +17,8 @@ import com.lancer.swipekeep.ui.common.Formatters
 /**
  * 范围行 + 月份行共用的适配器（单 view type，见 `item_scope_row.xml` 的注释）。
  *
- * **每次 bind 都要重置全部可变状态**（alpha / isEnabled / 监听器 / 药丸的可见性与配色）：
- * RecyclerView 会复用 View，只设置「当前行需要的东西」会让上一行的置灰状态漏到下一行 ——
- * 这类 bug 只在列表滚动几屏之后才出现，很容易漏测。
+ * **每次 bind 都要重置全部可变状态**（图标、背景、文字颜色、药丸、chevron、监听器）：
+ * RecyclerView 会复用 View，只设置「当前行需要的东西」会让上一行的状态漏到下一行。
  */
 class ScopeRowsAdapter(
     private val onStartAllPhotos: (SortOrder) -> Unit,
@@ -63,25 +63,28 @@ class ScopeRowsAdapter(
                 ScopeRow.ActionKind.VIDEOS -> context.getString(R.string.scope_soon_videos)
             }
 
-            binding.tile.setBackgroundResource(
-                when (row.kind) {
-                    ScopeRow.ActionKind.ALL_PHOTOS -> R.drawable.bg_scope_tile_1
-                    ScopeRow.ActionKind.SCREENSHOTS -> R.drawable.bg_scope_tile_2
-                    ScopeRow.ActionKind.SIMILAR -> R.drawable.bg_scope_tile_3
-                    ScopeRow.ActionKind.VIDEOS -> R.drawable.bg_scope_tile_4
-                },
-            )
+            val iconRes = when (row.kind) {
+                ScopeRow.ActionKind.ALL_PHOTOS -> R.drawable.ic_scope_all
+                ScopeRow.ActionKind.SCREENSHOTS -> R.drawable.ic_scope_screenshots
+                ScopeRow.ActionKind.SIMILAR -> R.drawable.ic_scope_similar
+                ScopeRow.ActionKind.VIDEOS -> R.drawable.ic_scope_videos
+            }
+            val tileColorRes = when (row.kind) {
+                ScopeRow.ActionKind.ALL_PHOTOS -> R.color.tile_blue
+                ScopeRow.ActionKind.SCREENSHOTS -> R.color.tile_purple
+                ScopeRow.ActionKind.SIMILAR -> R.color.tile_green
+                ScopeRow.ActionKind.VIDEOS -> R.color.tile_orange
+            }
+            bindTile(iconRes, tileColorRes)
 
-            applyEnabledState(enabled = row.enabled)
+            applyEnabledState(context, enabled = row.enabled)
 
             when (row.kind) {
                 ScopeRow.ActionKind.ALL_PHOTOS -> {
-                    // 排序切换挂在「推荐」药丸上：设计图里没有排序控件，而这一行的标题本身就写着
-                    // 「从最近开始 / 从最旧开始」，点标题是「开始清理」。两件事不能共用一个点击目标，
-                    // 所以把切换放到紧挨着的小药丸上 —— 不新增视觉元素，位置也贴着它影响的那行字。
+                    // 排序切换挂在「推荐」药丸上，与「开始清理」的点击目标分开。
                     binding.pill.isVisible = true
                     binding.pill.setBackgroundResource(R.drawable.bg_pill_recommend)
-                    binding.pill.setTextColor(ContextCompat.getColor(context, R.color.brand_orange))
+                    binding.pill.setTextColor(color(context, R.color.pill_recommend_text))
                     binding.pill.setText(R.string.pill_recommend)
                     binding.pill.contentDescription = context.getString(
                         R.string.cd_scope_sort_toggle,
@@ -95,13 +98,14 @@ class ScopeRowsAdapter(
 
                 else -> {
                     binding.pill.isVisible = true
-                    binding.pill.setBackgroundResource(R.drawable.bg_pill_muted)
-                    binding.pill.setTextColor(ContextCompat.getColor(context, R.color.text_secondary))
+                    binding.pill.setBackgroundResource(R.drawable.bg_pill_soon)
+                    binding.pill.setTextColor(color(context, R.color.pill_soon_text))
                     binding.pill.setText(R.string.pill_coming_soon)
+                    binding.pill.contentDescription = null
                     binding.pill.isClickable = false
                     binding.pill.setOnClickListener(null)
 
-                    // 不可点：连 ripple 都不该有，否则点下去像是「按了但没反应」而不是「这功能没有」。
+                    // 不可点：连 ripple 都不该有，否则点下去像是「按了但没反应」。
                     binding.rowRoot.setOnClickListener(null)
                 }
             }
@@ -111,26 +115,41 @@ class ScopeRowsAdapter(
             val bucket = row.bucket
             binding.title.text = Formatters.monthLabel(context, bucket.year, bucket.month, bucket.isUnknown)
             binding.subtitle.text = context.getString(R.string.scope_month_count, bucket.count)
-            binding.tile.setBackgroundResource(R.drawable.bg_scope_tile_5)
+            bindTile(R.drawable.ic_scope_month, R.color.tile_pink)
 
             // 月份行一律可点、一律没有药丸 —— 与 Action 行共用布局，所以必须显式复位。
-            applyEnabledState(enabled = true)
+            applyEnabledState(context, enabled = true)
             binding.pill.isVisible = false
+            binding.pill.contentDescription = null
+            binding.pill.isClickable = false
             binding.pill.setOnClickListener(null)
             binding.rowRoot.setOnClickListener { onStartMonth(row) }
         }
 
-        private fun applyEnabledState(enabled: Boolean) {
+        private fun bindTile(iconRes: Int, tileColorRes: Int) {
+            val context = binding.root.context
+            binding.tile.setImageResource(iconRes)
+            binding.tile.imageTintList = ColorStateList.valueOf(color(context, R.color.white))
+            binding.tile.backgroundTintList = ColorStateList.valueOf(color(context, tileColorRes))
+        }
+
+        private fun applyEnabledState(context: Context, enabled: Boolean) {
             binding.rowRoot.isEnabled = enabled
             binding.rowRoot.isClickable = enabled
-            // 0.45 与设计图里置灰行的观感一致（阶段 1 对照页已按这个值比对过）。
-            binding.rowRoot.alpha = if (enabled) 1f else DISABLED_ALPHA
+            binding.rowRoot.isFocusable = enabled
+            binding.rowRoot.alpha = 1f
+            binding.rowRoot.setCardBackgroundColor(color(context, R.color.white))
+            binding.title.setTextColor(color(context, R.color.ink))
+            binding.subtitle.setTextColor(color(context, R.color.text_secondary))
+            binding.chevron.imageTintList = ColorStateList.valueOf(
+                color(context, if (enabled) R.color.chevron else R.color.chevron_disabled),
+            )
         }
+
+        private fun color(context: Context, res: Int): Int = ContextCompat.getColor(context, res)
     }
 
     private companion object {
-        const val DISABLED_ALPHA = 0.45f
-
         val DIFF = object : DiffUtil.ItemCallback<ScopeRow>() {
             override fun areItemsTheSame(oldItem: ScopeRow, newItem: ScopeRow): Boolean = oldItem.key == newItem.key
 

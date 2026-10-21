@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  滑卡清理主界面（设计图 01）。
-
-  纵向骨架自上而下：顶栏（标题 + 进度）→ 卡片堆（吃掉剩余高度）→ 滑动提示 → 三个控制键。
-
-  卡片堆用 0dp 高度而不是写死尺寸：卡片自己按可用空间算尺寸（见 SwipeCardStackView.onMeasure），
-  窄屏上整体缩小而不是被裁掉。
+  滑卡清理主界面。
+  纵向骨架：顶栏（返回/标题/结束/回收站 + 进度）→ 卡片堆 → 提示 → 三操作键。
 -->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,7 +11,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_cream">
 
-    <!-- ============ 顶栏：标题 + 回收站入口 + 进度 ============ -->
+    <!-- ============ 顶栏 ============ -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="0dp"
@@ -27,13 +23,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="@dimen/icon_btn_size"
+                android:layout_height="@dimen/icon_btn_size"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_back"
+                android:padding="12dp"
+                android:src="@drawable/ic_back"
+                app:tint="@color/ink" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_1"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
@@ -46,53 +56,38 @@
                     android:layout_width="@dimen/title_underline_w"
                     android:layout_height="@dimen/title_underline_h"
                     android:layout_marginTop="@dimen/title_underline_gap"
-                    android:background="@color/brand_orange" />
+                    android:background="@drawable/bg_title_underline" />
             </LinearLayout>
 
-            <!--
-              提前结束。放在回收站左侧：marginEnd 让出回收站的触摸盒（12dp padding + 32dp 图标），
-              视觉间隔正好是回收站自带的 padding，两个命中区不重叠。
-              高度用 minHeight 而不是写死 32dp —— 大字体下文字不会被裁。
-            -->
             <TextView
                 android:id="@+id/endButton"
-                style="@style/Text.RowTitle"
+                style="@style/Text.Secondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|top"
-                android:layout_marginEnd="44dp"
-                android:minHeight="@dimen/icon_btn_size"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:paddingHorizontal="8dp"
+                android:minHeight="@dimen/icon_btn_size"
+                android:paddingHorizontal="@dimen/space_2"
                 android:text="@string/swipe_end"
                 android:textColor="@color/text_secondary"
                 android:visibility="gone"
                 tools:visibility="visible" />
 
-            <!--
-              回收站入口。给图标留一点 start/bottom padding：触摸区从 32dp 扩到 44dp，
-              而图标与徽标的位置分毫未动（end|top 对齐的是内容区，paddingEnd/Bottom 都是 0）。
-            -->
             <FrameLayout
                 android:id="@+id/trashButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|top"
+                android:layout_width="@dimen/icon_btn_size"
+                android:layout_height="@dimen/icon_btn_size"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
-                android:focusable="true"
-                android:paddingStart="12dp"
-                android:paddingBottom="12dp">
+                android:focusable="true">
 
                 <ImageView
-                    android:layout_width="@dimen/icon_btn_size"
-                    android:layout_height="@dimen/icon_btn_size"
-                    android:layout_gravity="end|top"
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="@dimen/icon_size"
+                    android:layout_gravity="center"
                     android:contentDescription="@string/cd_trash"
-                    android:padding="5dp"
                     android:src="@drawable/ic_trash"
                     app:tint="@color/ink" />
 
@@ -108,7 +103,7 @@
                     android:textStyle="bold"
                     tools:text="12" />
             </FrameLayout>
-        </FrameLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/progressText"
@@ -116,6 +111,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/progress_gap"
+            android:ellipsize="end"
+            android:maxLines="1"
             tools:text="2024 年 5 月 · 已看 128 / 356 张" />
 
         <ProgressBar
@@ -139,78 +136,192 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topBar" />
 
-    <!-- ============ 空 / 看完了：占住卡片堆的位置 ============ -->
+    <!-- ============ 加载态 ============ -->
     <LinearLayout
-        android:id="@+id/statusPanel"
+        android:id="@+id/loadingPanel"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingHorizontal="@dimen/screen_padding_h"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/cardStack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/cardStack">
 
+        <ProgressBar
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:indeterminateTint="@color/brand_orange" />
+
         <TextView
-            android:id="@+id/statusText"
-            style="@style/Text.SectionLabel"
+            style="@style/Text.Secondary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            tools:text="这个范围里没有照片" />
-
-        <!--
-          看完了才有意义 —— 空范围（「这个范围里没有照片」）没有可结算的东西，
-          所以它跟着 `finished` 一起显隐，由 SwipeFragment.render 决定。
-        -->
-        <TextView
-            android:id="@+id/statusSettle"
-            style="@style/Text.RowTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/cta_h"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/bg_cta_primary"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:paddingHorizontal="44dp"
-            android:text="@string/swipe_view_settlement"
-            android:textColor="@color/white"
-            android:textSize="@dimen/cta_text"
-            android:textStyle="bold"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-        <TextView
-            android:id="@+id/statusBack"
-            style="@style/Text.RowTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/cta_secondary_h"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/bg_cta_secondary"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:paddingHorizontal="32dp"
-            android:text="@string/swipe_back"
-            android:textSize="@dimen/cta_secondary_text" />
+            android:layout_marginTop="@dimen/space_3"
+            android:text="@string/swipe_loading" />
     </LinearLayout>
 
-    <!--
-      中场激励。浮在卡片区下沿之上，靠 alpha 淡入淡出（`SwipeFragment.showMilestone`）。
-      声明在 cardStack 之后，所以它画在卡片之上 —— 卡片飞出屏幕时会从它背后穿过。
-    -->
+    <!-- ============ 空 / 完成态 ============ -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/statusPanel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/cardStack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cardStack">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/screen_padding_h"
+            android:paddingVertical="@dimen/space_4">
+
+            <FrameLayout
+                android:layout_width="@dimen/empty_illustration_w"
+                android:layout_height="@dimen/empty_illustration_h"
+                android:importantForAccessibility="no">
+
+                <View
+                    android:layout_width="@dimen/empty_photo_w"
+                    android:layout_height="@dimen/empty_photo_h"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_empty_photo_back"
+                    android:rotation="-12"
+                    android:translationX="-20dp"
+                    android:translationY="6dp" />
+
+                <View
+                    android:layout_width="@dimen/empty_photo_w"
+                    android:layout_height="@dimen/empty_photo_h"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_empty_photo_mid" />
+
+                <View
+                    android:layout_width="@dimen/empty_photo_w"
+                    android:layout_height="@dimen/empty_photo_h"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_empty_photo_front"
+                    android:rotation="12"
+                    android:translationX="20dp"
+                    android:translationY="6dp" />
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_scope_all"
+                    app:tint="@color/brand_orange" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="end|top"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="18dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_sparkle" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/statusText"
+                style="@style/Text.StatusTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_5"
+                android:gravity="center"
+                tools:text="已经没有更多照片了" />
+
+            <TextView
+                android:id="@+id/statusSubtitle"
+                style="@style/Text.Secondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_2"
+                android:gravity="center"
+                tools:text="今天的清理任务完成啦" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/statusSettle"
+                style="@style/Widget.SwipeKeep.Cta.Primary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:minWidth="168dp"
+                android:text="@string/swipe_view_settlement"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/statusBack"
+                style="@style/Widget.SwipeKeep.Cta.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_3"
+                android:minWidth="168dp"
+                android:text="@string/swipe_back" />
+
+            <LinearLayout
+                android:id="@+id/statusTipCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_6"
+                android:background="@drawable/bg_tip"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/space_4"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_tip_bulb" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_3"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/swipe_tip_title"
+                        android:textColor="@color/ink"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        style="@style/Text.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/swipe_tip_body" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- ============ 中场激励 ============ -->
     <TextView
         android:id="@+id/milestone"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/toast_h"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/space_4"
         android:alpha="0"
         android:background="@drawable/bg_toast"
         android:gravity="center"
-        android:paddingHorizontal="18dp"
+        android:paddingHorizontal="@dimen/space_5"
         android:textColor="@color/toast_text"
         android:textSize="@dimen/toast_text"
         app:layout_constraintBottom_toTopOf="@id/hintRow"
@@ -235,66 +346,108 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/hint_delete"
-            android:textColor="@color/delete_red" />
+            android:textColor="@color/delete_red_text" />
 
         <TextView
             style="@style/Text.Hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/hint_keep"
-            android:textColor="@color/keep_green" />
+            android:textColor="@color/keep_green_text" />
     </LinearLayout>
 
-    <!-- ============ 三个控制键 ============ -->
+    <!-- ============ 三操作键 ============ -->
     <LinearLayout
         android:id="@+id/controlsBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:paddingTop="20dp"
-        android:paddingBottom="24dp"
+        android:paddingTop="@dimen/space_3"
+        android:paddingBottom="@dimen/space_3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/buttonDelete"
-            android:layout_width="@dimen/btn_action_size"
-            android:layout_height="@dimen/btn_action_size"
-            android:background="@drawable/bg_btn_delete"
-            android:clickable="true"
-            android:contentDescription="@string/cd_btn_delete"
-            android:focusable="true"
-            android:padding="17dp"
-            android:src="@drawable/ic_close"
-            app:tint="@color/delete_red" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/buttonUndo"
-            android:layout_width="@dimen/btn_undo_size"
-            android:layout_height="@dimen/btn_undo_size"
-            android:layout_marginStart="@dimen/controls_gap"
-            android:background="@drawable/bg_btn_undo"
-            android:clickable="true"
-            android:contentDescription="@string/cd_btn_undo"
-            android:focusable="true"
-            android:padding="12dp"
-            android:src="@drawable/ic_undo"
-            app:tint="@color/text_secondary" />
+            <ImageButton
+                android:id="@+id/buttonDelete"
+                android:layout_width="@dimen/btn_action_size"
+                android:layout_height="@dimen/btn_action_size"
+                android:background="@drawable/bg_btn_delete"
+                android:contentDescription="@string/cd_btn_delete"
+                android:padding="19dp"
+                android:src="@drawable/ic_close"
+                app:tint="@color/btn_delete_tint" />
 
-        <ImageView
-            android:id="@+id/buttonKeep"
-            android:layout_width="@dimen/btn_action_size"
-            android:layout_height="@dimen/btn_action_size"
+            <TextView
+                android:id="@+id/labelDelete"
+                style="@style/Text.Pill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/controls_label_gap"
+                android:text="@string/stamp_delete"
+                android:textColor="@color/delete_red_text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/controls_gap"
-            android:background="@drawable/bg_btn_keep"
-            android:clickable="true"
-            android:contentDescription="@string/cd_btn_keep"
-            android:focusable="true"
-            android:padding="17dp"
-            android:src="@drawable/ic_check"
-            app:tint="@color/keep_green" />
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/buttonUndo"
+                android:layout_width="@dimen/btn_undo_size"
+                android:layout_height="@dimen/btn_undo_size"
+                android:background="@drawable/bg_btn_undo"
+                android:contentDescription="@string/cd_btn_undo"
+                android:padding="14dp"
+                android:src="@drawable/ic_undo"
+                app:tint="@color/btn_undo_tint" />
+
+            <TextView
+                android:id="@+id/labelUndo"
+                style="@style/Text.Pill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/controls_label_gap"
+                android:text="@string/undo_action"
+                android:textColor="@color/text_secondary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/controls_gap"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/buttonKeep"
+                android:layout_width="@dimen/btn_action_size"
+                android:layout_height="@dimen/btn_action_size"
+                android:background="@drawable/bg_btn_keep"
+                android:contentDescription="@string/cd_btn_keep"
+                android:padding="19dp"
+                android:src="@drawable/ic_check"
+                app:tint="@color/btn_keep_tint" />
+
+            <TextView
+                android:id="@+id/labelKeep"
+                style="@style/Text.Pill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/controls_label_gap"
+                android:text="@string/stamp_keep"
+                android:textColor="@color/keep_green_text" />
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
