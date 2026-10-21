@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  配合 ProgressBar 用的进度条 drawable（layer-list 的 id 名是平台约定，不是笔误）。
+  比用 LinearLayout weight 拼两段好：支持 setProgress()，复制自后端刷新也简单。
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@android:id/background"
+        android:drawable="@drawable/bg_progress_track" />
+    <item android:id="@android:id/progress">
+        <clip android:drawable="@drawable/bg_progress_fill" />
+    </item>
+</layer-list>

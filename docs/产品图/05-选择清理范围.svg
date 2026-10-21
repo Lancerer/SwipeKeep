@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="980" viewBox="0 0 780 980" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBF4E9"/><stop offset="1" stop-color="#F1E3D0"/>
+    </linearGradient>
+    <linearGradient id="t1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7FC8F8"/><stop offset="1" stop-color="#D9F0FF"/>
+    </linearGradient>
+    <linearGradient id="t2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C4B5FD"/><stop offset="1" stop-color="#E9E4FF"/>
+    </linearGradient>
+    <linearGradient id="t3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8FD3A8"/><stop offset="1" stop-color="#E2F5E9"/>
+    </linearGradient>
+    <linearGradient id="t4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFB36B"/><stop offset="1" stop-color="#FFE8D1"/>
+    </linearGradient>
+    <linearGradient id="t5" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F6A6C1"/><stop offset="1" stop-color="#FDE3EE"/>
+    </linearGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#3A2E22" flood-opacity="0.12"/>
+    </filter>
+    <clipPath id="scr"><rect x="201" y="90" width="378" height="800" rx="45"/></clipPath>
+  </defs>
+  <rect width="780" height="980" fill="url(#bg)"/>
+  <circle cx="110" cy="190" r="70" fill="#FFD9C2" opacity="0.45"/>
+  <circle cx="690" cy="800" r="90" fill="#CDE8D6" opacity="0.45"/>
+
+  <rect x="189" y="78" width="402" height="824" rx="56" fill="#16130F"/>
+  <rect x="201" y="90" width="378" height="800" rx="45" fill="#FAF7F2"/>
+  <g clip-path="url(#scr)">
+    <text x="238" y="120" font-size="15" font-weight="700" fill="#191816">9:41</text>
+    <rect x="498" y="114" width="3.5" height="6" rx="1.5" fill="#191816"/>
+    <rect x="504" y="111" width="3.5" height="9" rx="1.5" fill="#191816"/>
+    <rect x="510" y="108" width="3.5" height="12" rx="1.5" fill="#191816"/>
+    <rect x="516" y="105" width="3.5" height="15" rx="1.5" fill="#191816"/>
+    <rect x="540" y="107" width="25" height="13" rx="4" fill="none" stroke="#191816" stroke-width="1.5"/>
+    <rect x="542.5" y="109.5" width="15" height="8" rx="2" fill="#191816"/>
+
+    <text x="233" y="164" font-size="26" font-weight="800" fill="#191816">留不留</text>
+    <rect x="233" y="172" width="40" height="4" rx="2" fill="#FF6B35"/>
+    <g stroke="#8A8580" stroke-width="2.5" fill="none" stroke-linecap="round">
+      <circle cx="545" cy="158" r="8"/>
+      <path d="M545 144 v-4 M545 176 v-4 M531 158 h-4 M563 158 h-4 M535 148 l-3 -3 M558 171 l-3 -3 M555 148 l3 -3 M538 171 l3 -3"/>
+    </g>
+
+    <!-- storage card -->
+    <rect x="233" y="190" width="314" height="104" rx="20" fill="#FFFFFF" filter="url(#soft)"/>
+    <circle cx="285" cy="242" r="28" fill="none" stroke="#EFE8DE" stroke-width="9"/>
+    <circle cx="285" cy="242" r="28" fill="none" stroke="#FF6B35" stroke-width="9" stroke-linecap="round"
+            stroke-dasharray="131.9 175.9" transform="rotate(-90 285 242)"/>
+    <text x="285" y="248" text-anchor="middle" font-size="13" font-weight="800" fill="#191816">75%</text>
+    <text x="332" y="234" font-size="16" font-weight="700" fill="#191816">已用 96.4 GB / 128 GB</text>
+    <text x="332" y="260" font-size="12.5" fill="#8A8580">建议清理，预计可释放约 8 GB</text>
+
+    <text x="233" y="340" font-size="16" font-weight="700" fill="#191816">选择要清理的范围</text>
+
+    <!-- row 1 -->
+    <rect x="233" y="356" width="314" height="64" rx="16" fill="#FFFFFF" filter="url(#soft)"/>
+    <rect x="245" y="364" width="48" height="48" rx="12" fill="url(#t1)"/>
+    <text x="305" y="384" font-size="15" font-weight="700" fill="#191816">全部照片 · 从最近开始</text>
+    <text x="305" y="404" font-size="12" fill="#8A8580">356 张待清理</text>
+    <rect x="470" y="374" width="44" height="20" rx="10" fill="#FFF0E8"/>
+    <text x="492" y="388" text-anchor="middle" font-size="11" font-weight="700" fill="#FF6B35">推荐</text>
+    <text x="533" y="394" text-anchor="middle" font-size="22" fill="#C9C2B8">›</text>
+
+    <!-- row 2 -->
+    <rect x="233" y="432" width="314" height="64" rx="16" fill="#FFFFFF" filter="url(#soft)"/>
+    <rect x="245" y="440" width="48" height="48" rx="12" fill="url(#t2)"/>
+    <text x="305" y="460" font-size="15" font-weight="700" fill="#191816">截屏</text>
+    <text x="305" y="480" font-size="12" fill="#8A8580">89 张 · 多为废片</text>
+    <text x="533" y="470" text-anchor="middle" font-size="22" fill="#C9C2B8">›</text>
+
+    <!-- row 3 -->
+    <rect x="233" y="508" width="314" height="64" rx="16" fill="#FFFFFF" filter="url(#soft)"/>
+    <rect x="245" y="516" width="48" height="48" rx="12" fill="url(#t3)"/>
+    <text x="305" y="536" font-size="15" font-weight="700" fill="#191816">相似照片</text>
+    <text x="305" y="556" font-size="12" fill="#8A8580">45 组 · 默认保留最佳一张</text>
+    <rect x="470" y="526" width="44" height="20" rx="10" fill="#E8F1FF"/>
+    <text x="492" y="540" text-anchor="middle" font-size="11" font-weight="700" fill="#4A7FC1">智能</text>
+    <text x="533" y="546" text-anchor="middle" font-size="22" fill="#C9C2B8">›</text>
+
+    <!-- row 4 -->
+    <rect x="233" y="584" width="314" height="64" rx="16" fill="#FFFFFF" filter="url(#soft)"/>
+    <rect x="245" y="592" width="48" height="48" rx="12" fill="url(#t4)"/>
+    <text x="305" y="612" font-size="15" font-weight="700" fill="#191816">大视频</text>
+    <text x="305" y="632" font-size="12" fill="#8A8580">12 个 · 共 3.1 GB</text>
+    <text x="533" y="622" text-anchor="middle" font-size="22" fill="#C9C2B8">›</text>
+
+    <!-- row 5 -->
+    <rect x="233" y="660" width="314" height="64" rx="16" fill="#FFFFFF" filter="url(#soft)"/>
+    <rect x="245" y="668" width="48" height="48" rx="12" fill="url(#t5)"/>
+    <text x="305" y="688" font-size="15" font-weight="700" fill="#191816">2024 年 4 月</text>
+    <text x="305" y="708" font-size="12" fill="#8A8580">298 张待清理</text>
+    <text x="533" y="698" text-anchor="middle" font-size="22" fill="#C9C2B8">›</text>
+
+    <!-- CTA -->
+    <rect x="233" y="756" width="314" height="56" rx="16" fill="#FF6B35"/>
+    <text x="390" y="791" text-anchor="middle" font-size="17" font-weight="700" fill="#FFFFFF">开始清理</text>
+
+    <rect x="331" y="868" width="118" height="5" rx="2.5" fill="#D8D1C7"/>
+  </g>
+  <circle cx="390" cy="112" r="7" fill="#16130F"/>
+  <text x="390" y="948" text-anchor="middle" font-size="15" fill="#8A8580">05 · 选择清理范围</text>
+</svg>

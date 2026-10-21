@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  清理结算页（设计图 04）。
+
+  整页包在一个 ScrollView 里：设计图的画布是 800 单位高，这一屏的内容顶到 790，
+  本来就是一屏卡着边界的排法 —— 小屏或大字体下它一定会溢出，而溢出的表现是
+  「继续清理」按钮被挤到屏幕外，用户看不出还能往下滚。所以宁可允许滚动。
+
+  顺序与设计图逐段对应：绿勾 → 标题 → 副标题 → 三张统计卡 → 去向堆叠条 → 图例 →
+  留存提示 → 两个 CTA。
+-->
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_cream"
+    android:fillViewport="true"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/screen_padding_h"
+        android:paddingTop="@dimen/screen_padding_top"
+        android:paddingBottom="20dp">
+
+        <ImageView
+            android:id="@+id/settleCheck"
+            android:layout_width="@dimen/settle_check_size"
+            android:layout_height="@dimen/settle_check_size"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/bg_check_circle"
+            android:contentDescription="@null"
+            android:padding="18dp"
+            android:src="@drawable/ic_check"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/settleTitle"
+            style="@style/Text.SettleTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            tools:text="9 月清理完成！" />
+
+        <TextView
+            android:id="@+id/settleSubtitle"
+            style="@style/Text.RowSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center"
+            tools:text="一共看完 356 张，相册清爽多了" />
+
+        <!-- ============ 三张统计卡 ============ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/stat_card_h"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/stat_card_corner"
+                app:cardElevation="@dimen/panel_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/statFreed"
+                        style="@style/Text.StatValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/brand_orange"
+                        tools:text="2.3 GB" />
+
+                    <!--
+                      「预计释放」而不是设计图的「释放空间」：移入系统回收站只是把
+                      IS_TRASHED 置 1，字节要等系统过期或用户清空回收站才真的回来
+                      （实施计划 §1 第 1 条）。这一页上的按钮走到头也只是标记，
+                      所以这里不能承诺已经释放。
+                    -->
+                    <TextView
+                        android:id="@+id/statFreedLabel"
+                        style="@style/Text.StatLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/settle_stat_freed_label" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/stat_card_h"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/stat_card_corner"
+                app:cardElevation="@dimen/panel_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/statDeleted"
+                        style="@style/Text.StatValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/delete_red"
+                        tools:text="182" />
+
+                    <TextView
+                        style="@style/Text.StatLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/settle_stat_deleted_label" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/stat_card_h"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/stat_card_corner"
+                app:cardElevation="@dimen/panel_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/statKept"
+                        style="@style/Text.StatValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/keep_green"
+                        tools:text="174" />
+
+                    <TextView
+                        style="@style/Text.StatLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/settle_stat_kept_label" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <!-- ============ 去向堆叠条 ============ -->
+        <TextView
+            android:id="@+id/whereaboutsLabel"
+            style="@style/Text.RowTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/settle_whereabouts" />
+
+        <com.lancer.swipekeep.ui.widget.StackedBarView
+            android:id="@+id/stackedBar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/stacked_bar_h"
+            android:layout_marginTop="12dp" />
+
+        <LinearLayout
+            android:id="@+id/legendRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="@dimen/legend_dot"
+                android:layout_height="@dimen/legend_dot"
+                android:background="@drawable/bg_dot"
+                android:backgroundTint="@color/keep_green" />
+
+            <TextView
+                android:id="@+id/legendKeep"
+                style="@style/Text.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                tools:text="保留 49%" />
+
+            <View
+                android:layout_width="@dimen/legend_dot"
+                android:layout_height="@dimen/legend_dot"
+                android:layout_marginStart="24dp"
+                android:background="@drawable/bg_dot"
+                android:backgroundTint="@color/delete_red" />
+
+            <TextView
+                android:id="@+id/legendDelete"
+                style="@style/Text.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                tools:text="删除 51%" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/Text.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_tip"
+            android:gravity="center"
+            android:paddingVertical="@dimen/tip_pad_v"
+            android:text="@string/settle_tip"
+            android:textColor="@color/tip_text" />
+
+        <!-- ============ CTA ============ -->
+        <!--
+          阶段 6 的提交入口。设计图里没有它（那时「确认删除」还没落地），但它是这一页
+          真正有事可做的那一下：把这轮标记的待删交给系统回收站。
+
+          它与「继续清理」的角色会互斥：它出现时自己是主 CTA（橙底），
+          「继续清理」降为次级；提交完之后它消失，「继续清理」恢复主 CTA。
+          两个橙色实心按钮上下叠着会让人分不清哪个才是下一步。
+        -->
+        <TextView
+            android:id="@+id/ctaConfirm"
+            style="@style/Text.RowTitle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cta_h"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/bg_cta_primary"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/cta_text"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:text="确认删除 182 张"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/ctaNext"
+            style="@style/Text.RowTitle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cta_h"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_cta_primary"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/settle_cta_next"
+            android:textColor="@color/white"
+            android:textSize="@dimen/cta_text"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/ctaTrash"
+            style="@style/Text.RowTitle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cta_secondary_h"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_cta_secondary"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:textSize="@dimen/cta_secondary_text"
+            tools:text="查看回收站（12）" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/scopeFragment">
+
+    <fragment
+        android:id="@+id/scopeFragment"
+        android:name="com.lancer.swipekeep.ui.screens.scope.ScopeFragment"
+        android:label="scope">
+
+        <action
+            android:id="@+id/action_scope_to_swipe"
+            app:destination="@id/swipeFragment" />
+    </fragment>
+
+    <!--
+      滑卡页。阶段 2 这里只是个能显示「收到了什么范围」的占位，用来验证 Safe Args 传参
+      与「全部照片 / 某个月」两条路径都通；阶段 3 会把内部换成真正的卡片堆。
+
+      参数刻意用 (year, month, isUnknown) 而不是一个字符串 scopeType：
+      `year < 0` 即「全部照片」，省掉一处「字符串枚举 → 枚举」的解析，
+      连同它必然带来的「拼错字符串」那一整类运行时错误。
+    -->
+    <fragment
+        android:id="@+id/swipeFragment"
+        android:name="com.lancer.swipekeep.ui.screens.swipe.SwipeFragment"
+        android:label="swipe">
+
+        <argument
+            android:name="sortOrder"
+            android:defaultValue="NEWEST_FIRST"
+            app:argType="com.lancer.swipekeep.domain.model.SortOrder" />
+
+        <!-- -1 = 全部照片 -->
+        <argument
+            android:name="year"
+            android:defaultValue="-1"
+            app:argType="integer" />
+
+        <argument
+            android:name="month"
+            android:defaultValue="-1"
+            app:argType="integer" />
+
+        <argument
+            android:name="isUnknown"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+        <action
+            android:id="@+id/action_swipe_to_settlement"
+            app:destination="@id/settlementFragment" />
+
+        <action
+            android:id="@+id/action_swipe_to_trash"
+            app:destination="@id/trashFragment" />
+    </fragment>
+
+    <!--
+      结算页。**统计数字全部走 nav args，不共享 ViewModel。**
+
+      试过让 `SwipeViewModel` 升成 activity 作用域，好处是两页读同一份会话；代价是
+      它的工厂只跑一次，于是「返回范围页 → 换个月份再进来」会拿着上一次的范围继续用 ——
+      那种错很难从代码上看出来（页面正常打开、数字也对，只是范围是旧的）。
+
+      这一页因此是**纯渲染器**：给它七个数字和一个终态，它画出来。没有相册查询、没有会话状态，
+      所以它在真机上好不好看，等于「布局对不对」这一个问题。
+    -->
+    <fragment
+        android:id="@+id/settlementFragment"
+        android:name="com.lancer.swipekeep.ui.screens.settlement.SettlementFragment"
+        android:label="settlement">
+
+        <!-- -1 = 全部照片，与 swipeFragment 同一套约定 -->
+        <argument
+            android:name="year"
+            android:defaultValue="-1"
+            app:argType="integer" />
+
+        <argument
+            android:name="month"
+            android:defaultValue="-1"
+            app:argType="integer" />
+
+        <argument
+            android:name="isUnknown"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+        <argument
+            android:name="deletedCount"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <!-- Safe Args 要求 long 的默认值带 L 后缀，写 "0" 会报 Failed to parse -->
+        <argument
+            android:name="deletedBytes"
+            android:defaultValue="0L"
+            app:argType="long" />
+
+        <argument
+            android:name="keptCount"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <argument
+            android:name="totalSeen"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <!--
+          终态：true = 滑完整个范围，false = 顶栏「结束」提前收工。
+          语义就是 `SwipeSession.finished` 的原样透传，这里不拿 totalSeen/total 重算一遍 ——
+          同一个不变量有两份实现，迟早会有一页说「完成」而另一页说「没完」。
+
+          特意不给默认值：本页只有 action_swipe_to_settlement 一个入口，
+          给默认值等于替「没人走的路径」猜一个终态，而这一页恰恰不能撒谎。
+        -->
+        <argument
+            android:name="completed"
+            app:argType="boolean" />
+
+        <action
+            android:id="@+id/action_settlement_to_trash"
+            app:destination="@id/trashFragment" />
+    </fragment>
+
+    <!--
+      系统回收站（阶段 6）。列的是 `MATCH_ONLY` 查出来的、**已经在系统回收站里**的照片 ——
+      不是 App 内的待删队列。两个入口（滑卡页顶栏、结算页）都指向这里，参数为空：
+      这一页不关心用户是从哪个范围进来的，回收站是全相册共享的。
+    -->
+    <fragment
+        android:id="@+id/trashFragment"
+        android:name="com.lancer.swipekeep.ui.screens.trash.TrashFragment"
+        android:label="trash" />
+
+    <!--
+      开发期组件对照页。保留为无入口的调试目的地，阶段 8 收尾时删除。
+    -->
+    <fragment
+        android:id="@+id/styleGuideFragment"
+        android:name="com.lancer.swipekeep.ui.screens.styleguide.StyleGuideFragment"
+        android:label="styleguide" />
+
+</navigation>

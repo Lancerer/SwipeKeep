@@ -1,0 +1,881 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  阶段 1 的组件对照页：把设计图里的组件逐个并排渲染出来，与 docs/产品图/*.svg 目视比对。
+  这不是最终界面，只是设计令牌与自定义 View 的验收台；正常流程进不到这里。
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_cream"
+    android:fillViewport="true"
+    tools:ignore="HardcodedText">
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/screen_padding_h"
+        android:paddingTop="@dimen/screen_padding_top"
+        android:paddingBottom="48dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/styleguide_note"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+        <!-- ============ 1. 顶部：标题 + 进度 + 回收站入口 ============ -->
+        <TextView
+            style="@style/Text.RowSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[1] 顶部栏" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Text.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/styleguide_scaffold_title" />
+
+                <View
+                    android:layout_width="@dimen/title_underline_w"
+                    android:layout_height="@dimen/title_underline_h"
+                    android:layout_marginTop="@dimen/title_underline_gap"
+                    android:background="@color/brand_orange" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|top">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_btn_size"
+                    android:layout_height="@dimen/icon_btn_size"
+                    android:contentDescription="@string/cd_trash"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_trash"
+                    app:tint="@color/ink" />
+
+                <TextView
+                    android:layout_width="@dimen/badge_size"
+                    android:layout_height="@dimen/badge_size"
+                    android:layout_gravity="end|top"
+                    android:background="@drawable/bg_badge"
+                    android:gravity="center"
+                    android:text="12"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/badge_text"
+                    android:textStyle="bold" />
+            </FrameLayout>
+        </FrameLayout>
+
+        <TextView
+            style="@style/Text.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/progress_gap"
+            android:text="2024年5月 · 已看 128 / 356 张" />
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/progress_bar_h"
+            android:layout_marginTop="@dimen/progress_gap"
+            android:max="356"
+            android:progress="128"
+            android:progressDrawable="@drawable/bg_progress_horizontal" />
+
+        <!-- ============ 2. 照片卡片 + 印章 ============ -->
+        <TextView
+            style="@style/Text.RowSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="[2] 照片卡片（300×400dp 圆角 24）" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="300dp"
+            android:layout_height="400dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/card_corner"
+            app:cardElevation="@dimen/card_elevation"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="@dimen/card_stroke">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- 内图：四周缩进 12dp，底部给信息条留 58dp -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/card_photo_inset"
+                    android:layout_marginTop="@dimen/card_photo_inset"
+                    android:layout_marginEnd="@dimen/card_photo_inset"
+                    android:layout_marginBottom="@dimen/card_caption_h">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_photo_placeholder"
+                        android:contentDescription="@null" />
+
+                    <!-- 印章态：22% 同色遮罩 + 印章本体（alpha 由代码按滑动位移驱动） -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#38F5484D" />
+
+                    <TextView
+                        android:layout_width="@dimen/stamp_w"
+                        android:layout_height="@dimen/stamp_h"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_stamp_delete"
+                        android:gravity="center"
+                        android:rotation="-6"
+                        android:text="@string/stamp_delete"
+                        android:textColor="@color/delete_red"
+                        android:textSize="@dimen/stamp_text"
+                        android:textStyle="bold" />
+                </FrameLayout>
+
+                <TextView
+                    style="@style/Text.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:text="IMG_2048.jpg · 2.4 MB · 2024/05/12" />
+            </FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ============ 3. 印章（两种） ============ -->
+        <TextView
+            style="@style/Text.RowSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="[3] 印章（170×66dp / 4dp 描边 / 42sp / 旋转 -6°）" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/stamp_w"
+                android:layout_height="@dimen/stamp_h"
+                android:background="@drawable/bg_stamp_delete"
+                android:gravity="center"
+                android:rotation="-6"
+                android:text="@string/stamp_delete"
+                android:textColor="@color/delete_red"
+                android:textSize="@dimen/stamp_text"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="@dimen/stamp_w"
+                android:layout_height="@dimen/stamp_h"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/bg_stamp_keep"
+                android:gravity="center"
+                android:rotation="6"
+                android:text="@string/stamp_keep"
+                android:textColor="@color/keep_green"
+                android:textSize="@dimen/stamp_text"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- ============ 4. 滑动提示 + 三个控制按钮 ============ -->
+        <TextView
+            style="@style/Text.RowSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="[4] 滑动提示 + 控制按钮" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/Text.Hint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/hint_delete"
+                android:textColor="@color/delete_red" />
+
+            <TextView
+                style="@style/Text.Hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_keep"
+                android:textColor="@color/keep_green" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/btn_action_size"
+                android:layout_height="@dimen/btn_action_size"
+                android:background="@drawable/bg_btn_delete"
+                android:contentDescription="@string/cd_btn_delete"
+                android:padding="17dp"
+                android:src="@drawable/ic_close"
+                app:tint="@color/delete_red" />
+
+            <ImageView
+                android:layout_width="@dimen/btn_undo_size"
+                android:layout_height="@dimen/btn_undo_size"
+                android:layout_marginStart="@dimen/controls_gap"
+                android:background="@drawable/bg_btn_undo"
+                android:contentDescription="@string/cd_btn_undo"
+                android:padding="12dp"
+                android:src="@drawable/ic_undo"
+                app:tint="@color/text_secondary" />
+
+            <ImageView
+                android:layout_width="@dimen/btn_action_size"
+                android:layout_height="@dimen/btn_action_size"
+                android:layout_marginStart="@dimen/controls_gap"
+                android:background="@drawable/bg_btn_keep"
+                android:contentDescription="@string/cd_btn_keep"
+                android:padding="17dp"
+                android:src="@drawable/ic_check"
+                app:tint="@color/keep_green" />
+        </LinearLayout>
+
+        <!-- ============ 5. 存储卡 + 圆环 ============ -->
+        <TextView
+            style="@style/Text.RowSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="[5] 存储卡 + 圆环（56dp / 线宽 9dp）" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/panel_corner"
+            app:cardElevation="@dimen/panel_elevation">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="20dp">
+
+                <com.lancer.swipekeep.ui.widget.DonutProgressView
+                    android:layout_width="@dimen/donut_size"
+                    android:layout_height="@dimen/donut_size"
+                    app:donutCenterText="75%"
+                    app:donutProgress="0.75" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.RowTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/scope_storage_used" />
+
+                    <TextView
+                        style="@style/Text.RowSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/scope_storage_advice" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ============ 6. 范围行（含置灰的 V2 条目） ============ -->
+        <TextView
+            style="@style/Text.RowSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="[6] 范围行（64dp 高 / 圆角 16 / 方块 48dp）" />
+
+        <TextView
+            style="@style/Text.SectionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/scope_pick_title" />
+
+        <!-- 全部照片 · 可点 · 推荐 -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/row_h"
+            android:layout_marginTop="@dimen/row_gap"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/row_corner"
+            app:cardElevation="@dimen/panel_elevation">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
+
+                <View
+                    android:layout_width="@dimen/tile_size"
+                    android:layout_height="@dimen/tile_size"
+                    android:background="@drawable/bg_scope_tile_1" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.RowTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/scope_all_photos" />
+
+                    <TextView
+                        style="@style/Text.RowSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="356 张待清理" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Text.Pill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/pill_h"
+                    android:background="@drawable/bg_pill_recommend"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/pill_pad_h"
+                    android:text="@string/pill_recommend"
+                    android:textColor="@color/brand_orange" />
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginStart="6dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="@color/divider" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 截屏 · 置灰 · 敬请期待 -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/row_h"
+            android:layout_marginTop="@dimen/row_gap"
+            android:alpha="0.45"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/row_corner"
+            app:cardElevation="@dimen/panel_elevation">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
+
+                <View
+                    android:layout_width="@dimen/tile_size"
+                    android:layout_height="@dimen/tile_size"
+                    android:background="@drawable/bg_scope_tile_2" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.RowTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/scope_screenshots" />
+
+                    <TextView
+                        style="@style/Text.RowSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/scope_soon_screenshots" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Text.Pill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/pill_h"
+                    android:background="@drawable/bg_pill_muted"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/pill_pad_h"
+                    android:text="@string/pill_coming_soon"
+                    android:textColor="@color/text_secondary" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 相似照片 · 置灰 · 敬请期待 -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/row_h"
+            android:layout_marginTop="@dimen/row_gap"
+            android:alpha="0.45"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/row_corner"
+            app:cardElevation="@dimen/panel_elevation">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
+
+                <View
+                    android:layout_width="@dimen/tile_size"
+                    android:layout_height="@dimen/tile_size"
+                    android:background="@drawable/bg_scope_tile_3" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.RowTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/scope_similar" />
+
+                    <TextView
+                        style="@style/Text.RowSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/scope_soon_similar" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Text.Pill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/pill_h"
+                    android:background="@drawable/bg_pill_muted"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/pill_pad_h"
+                    android:text="@string/pill_coming_soon"
+                    android:textColor="@color/text_secondary" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 大视频 · 置灰 · 敬请期待 -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/row_h"
+            android:layout_marginTop="@dimen/row_gap"
+            android:alpha="0.45"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/row_corner"
+            app:cardElevation="@dimen/panel_elevation">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
+
+                <View
+                    android:layout_width="@dimen/tile_size"
+                    android:layout_height="@dimen/tile_size"
+                    android:background="@drawable/bg_scope_tile_4" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.RowTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/scope_videos" />
+
+                    <TextView
+                        style="@style/Text.RowSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/scope_soon_videos" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Text.Pill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/pill_h"
+                    android:background="@drawable/bg_pill_muted"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/pill_pad_h"
+                    android:text="@string/pill_coming_soon"
+                    android:textColor="@color/text_secondary" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 按月份 · 可点 -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/row_h"
+            android:layout_marginTop="@dimen/row_gap"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/row_corner"
+            app:cardElevation="@dimen/panel_elevation">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
+
+                <View
+                    android:layout_width="@dimen/tile_size"
+                    android:layout_height="@dimen/tile_size"
+                    android:background="@drawable/bg_scope_tile_5" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.RowTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2024 年 4 月" />
+
+                    <TextView
+                        style="@style/Text.RowSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="298 张待清理" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="@color/divider" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ============ 7. 结算页组件 ============ -->
+        <TextView
+            style="@style/Text.RowSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="[7] 结算页组件" />
+
+        <ImageView
+            android:layout_width="@dimen/settle_check_size"
+            android:layout_height="@dimen/settle_check_size"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_check_circle"
+            android:contentDescription="@null"
+            android:padding="18dp"
+            android:src="@drawable/ic_check"
+            app:tint="@color/white" />
+
+        <TextView
+            style="@style/Text.SettleTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="5 月清理完成！" />
+
+        <TextView
+            style="@style/Text.RowSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="6dp"
+            android:text="一共看完 356 张，相册清爽多了" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/stat_card_h"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/stat_card_corner"
+                app:cardElevation="@dimen/panel_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.StatValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2.3 GB"
+                        android:textColor="@color/brand_orange" />
+
+                    <TextView
+                        style="@style/Text.StatLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/settle_stat_freed_label" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/stat_card_h"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/stat_card_corner"
+                app:cardElevation="@dimen/panel_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.StatValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="182"
+                        android:textColor="@color/delete_red" />
+
+                    <TextView
+                        style="@style/Text.StatLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/settle_stat_deleted_label" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/stat_card_h"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/stat_card_corner"
+                app:cardElevation="@dimen/panel_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Text.StatValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="174"
+                        android:textColor="@color/keep_green" />
+
+                    <TextView
+                        style="@style/Text.StatLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/settle_stat_kept_label" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <TextView
+            style="@style/Text.RowTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/settle_whereabouts" />
+
+        <com.lancer.swipekeep.ui.widget.StackedBarView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/stacked_bar_h"
+            android:layout_marginTop="12dp"
+            app:barKeepFraction="0.49" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="@dimen/legend_dot"
+                android:layout_height="@dimen/legend_dot"
+                android:background="@drawable/bg_dot"
+                android:backgroundTint="@color/keep_green" />
+
+            <TextView
+                style="@style/Text.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="保留 49%" />
+
+            <View
+                android:layout_width="@dimen/legend_dot"
+                android:layout_height="@dimen/legend_dot"
+                android:layout_marginStart="24dp"
+                android:background="@drawable/bg_dot"
+                android:backgroundTint="@color/delete_red" />
+
+            <TextView
+                style="@style/Text.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="删除 51%" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/Text.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_tip"
+            android:gravity="center"
+            android:paddingVertical="@dimen/tip_pad_v"
+            android:text="@string/settle_tip"
+            android:textColor="@color/tip_text" />
+
+        <!-- ============ 8. CTA 按钮 ============ -->
+        <TextView
+            style="@style/Text.RowSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="[8] CTA 按钮" />
+
+        <TextView
+            style="@style/Text.RowTitle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cta_h"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_cta_primary"
+            android:gravity="center"
+            android:text="@string/cta_start"
+            android:textColor="@color/white"
+            android:textSize="@dimen/cta_text" />
+
+        <TextView
+            style="@style/Text.RowTitle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cta_secondary_h"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_cta_secondary"
+            android:gravity="center"
+            android:text="查看回收站（12）"
+            android:textSize="@dimen/cta_secondary_text" />
+
+        <!-- ============ 9. toast ============ -->
+        <TextView
+            style="@style/Text.RowSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="[9] toast（「已移入回收站」+ 撤销）" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/toast_h"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_toast"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="18dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已移入回收站"
+                android:textColor="@color/toast_text"
+                android:textSize="@dimen/toast_text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:text="@string/undo_action"
+                android:textColor="@color/toast_action"
+                android:textSize="@dimen/toast_text"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

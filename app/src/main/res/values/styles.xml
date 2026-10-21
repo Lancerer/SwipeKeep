@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+      注意：XML 里点号命名的样式会**隐式继承**同名前缀，所以 Text.Title 的父样式是 Text。
+      这个 Text 必须存在，否则 AAPT 会报 "resource style/Text not found"。
+    -->
+    <style name="Text">
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Text.Title">
+        <item name="android:textSize">@dimen/title_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.SectionLabel">
+        <item name="android:textSize">@dimen/section_label</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.RowTitle">
+        <item name="android:textSize">@dimen/row_title</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.RowSubtitle">
+        <item name="android:textSize">@dimen/row_subtitle</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="Text.Secondary">
+        <item name="android:textSize">@dimen/text_secondary</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="Text.Hint">
+        <item name="android:textSize">@dimen/swipe_hint_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Pill">
+        <item name="android:textSize">@dimen/pill_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.StatValue">
+        <item name="android:textSize">@dimen/stat_value</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.StatLabel">
+        <item name="android:textSize">@dimen/stat_label</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="Text.SettleTitle">
+        <item name="android:textSize">@dimen/settle_title</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Stamp">
+        <item name="android:textSize">@dimen/stamp_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!--
+      ShapeableImageView 的照片圆角。写成 parent="" 的独立样式是 Material 的约定：
+      ShapeAppearance 系列必须从零定义 cornerFamily/cornerSize，不能继承 Text 那种字号样式。
+    -->
+    <style name="ShapeAppearance.PhotoCard.Media" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/card_photo_corner</item>
+    </style>
+
+</resources>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  回收站（阶段 6）。列的是**系统回收站**里的照片（MATCH_ONLY），不是 App 内的待删队列 ——
+  待删在提交之前一步都没动过磁盘，它们属于滑卡页的进度，不属于这里（实施计划 §1 第 2 条）。
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_cream"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/screen_padding_h"
+        android:paddingTop="@dimen/screen_padding_top">
+
+        <!-- 没有返回箭头图标，用文字：这一页只有这一个导航出口，文字比自造的箭头清楚。 -->
+        <TextView
+            android:id="@+id/backButton"
+            style="@style/Text.RowTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/cd_back"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingVertical="4dp"
+            android:paddingEnd="12dp"
+            android:text="@string/swipe_back"
+            android:textColor="@color/text_secondary" />
+
+        <TextView
+            style="@style/Text.SectionLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="@string/trash_title" />
+
+        <TextView
+            android:id="@+id/trashCount"
+            style="@style/Text.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="182 张" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/trashTip"
+        style="@style/Text.Secondary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/screen_padding_h"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_tip"
+        android:gravity="center"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="@dimen/tip_pad_v"
+        android:text="@string/trash_tip"
+        android:textColor="@color/tip_text" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trashList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingHorizontal="@dimen/screen_padding_h"
+            android:paddingTop="@dimen/row_gap"
+            android:paddingBottom="16dp"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_trash" />
+
+        <TextView
+            android:id="@+id/emptyText"
+            style="@style/Text.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/trash_empty"
+            android:visibility="gone"
+            tools:visibility="gone" />
+    </FrameLayout>
+
+</LinearLayout>

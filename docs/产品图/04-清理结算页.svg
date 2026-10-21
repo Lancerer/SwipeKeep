@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="980" viewBox="0 0 780 980" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBF4E9"/><stop offset="1" stop-color="#F1E3D0"/>
+    </linearGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#3A2E22" flood-opacity="0.14"/>
+    </filter>
+    <clipPath id="scr"><rect x="201" y="90" width="378" height="800" rx="45"/></clipPath>
+  </defs>
+  <rect width="780" height="980" fill="url(#bg)"/>
+  <circle cx="110" cy="190" r="70" fill="#FFD9C2" opacity="0.45"/>
+  <circle cx="690" cy="800" r="90" fill="#CDE8D6" opacity="0.45"/>
+
+  <rect x="189" y="78" width="402" height="824" rx="56" fill="#16130F"/>
+  <rect x="201" y="90" width="378" height="800" rx="45" fill="#FAF7F2"/>
+  <g clip-path="url(#scr)">
+    <text x="238" y="120" font-size="15" font-weight="700" fill="#191816">9:41</text>
+    <rect x="498" y="114" width="3.5" height="6" rx="1.5" fill="#191816"/>
+    <rect x="504" y="111" width="3.5" height="9" rx="1.5" fill="#191816"/>
+    <rect x="510" y="108" width="3.5" height="12" rx="1.5" fill="#191816"/>
+    <rect x="516" y="105" width="3.5" height="15" rx="1.5" fill="#191816"/>
+    <rect x="540" y="107" width="25" height="13" rx="4" fill="none" stroke="#191816" stroke-width="1.5"/>
+    <rect x="542.5" y="109.5" width="15" height="8" rx="2" fill="#191816"/>
+
+    <!-- success check -->
+    <circle cx="390" cy="216" r="42" fill="#2EBD6B"/>
+    <polyline points="368,216 384,234 414,196" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <text x="390" y="306" text-anchor="middle" font-size="30" font-weight="800" fill="#191816">5 月清理完成！</text>
+    <text x="390" y="338" text-anchor="middle" font-size="14" fill="#8A8580">一共看完 356 张，相册清爽多了</text>
+
+    <!-- stats -->
+    <rect x="233" y="362" width="98" height="92" rx="18" fill="#FFFFFF" filter="url(#soft)"/>
+    <rect x="341" y="362" width="98" height="92" rx="18" fill="#FFFFFF" filter="url(#soft)"/>
+    <rect x="449" y="362" width="98" height="92" rx="18" fill="#FFFFFF" filter="url(#soft)"/>
+    <text x="282" y="404" text-anchor="middle" font-size="21" font-weight="800" fill="#FF6B35">2.3 GB</text>
+    <text x="282" y="430" text-anchor="middle" font-size="12" fill="#8A8580">释放空间</text>
+    <text x="390" y="404" text-anchor="middle" font-size="21" font-weight="800" fill="#F5484D">182</text>
+    <text x="390" y="430" text-anchor="middle" font-size="12" fill="#8A8580">删除照片</text>
+    <text x="498" y="404" text-anchor="middle" font-size="21" font-weight="800" fill="#2EBD6B">174</text>
+    <text x="498" y="430" text-anchor="middle" font-size="12" fill="#8A8580">保留照片</text>
+
+    <!-- breakdown bar -->
+    <text x="233" y="506" font-size="15" font-weight="700" fill="#191816">本月去向</text>
+    <rect x="233" y="520" width="314" height="16" rx="8" fill="#F5484D"/>
+    <rect x="233" y="520" width="153" height="16" rx="8" fill="#2EBD6B"/>
+    <circle cx="241" cy="556" r="5" fill="#2EBD6B"/>
+    <text x="252" y="560" font-size="12.5" fill="#8A8580">保留 49%</text>
+    <circle cx="330" cy="556" r="5" fill="#F5484D"/>
+    <text x="341" y="560" font-size="12.5" fill="#8A8580">删除 51%</text>
+
+    <!-- tip -->
+    <rect x="233" y="584" width="314" height="52" rx="14" fill="#FFF0E5"/>
+    <text x="390" y="615" text-anchor="middle" font-size="12.5" fill="#B0723F">回收站保留 7 天，删除前可随时恢复</text>
+
+    <!-- buttons -->
+    <rect x="233" y="664" width="314" height="56" rx="16" fill="#FF6B35"/>
+    <text x="390" y="699" text-anchor="middle" font-size="17" font-weight="700" fill="#FFFFFF">继续清理 6 月</text>
+    <rect x="233" y="736" width="314" height="52" rx="16" fill="none" stroke="#D8D1C7" stroke-width="1.5"/>
+    <text x="390" y="769" text-anchor="middle" font-size="15" fill="#191816">查看回收站（12）</text>
+
+    <rect x="331" y="868" width="118" height="5" rx="2.5" fill="#D8D1C7"/>
+  </g>
+  <circle cx="390" cy="112" r="7" fill="#16130F"/>
+  <text x="390" y="948" text-anchor="middle" font-size="15" fill="#8A8580">04 · 清理结算页</text>
+</svg>

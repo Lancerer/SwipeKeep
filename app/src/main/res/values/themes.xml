@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+      刻意用 Light 而非 DayNight：设计只有浅色一套，
+      用 DayNight 会让系统深色模式翻转整个品牌色板。
+    -->
+    <style name="Theme.SwipeKeep" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/brand_orange</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/tip_bg</item>
+        <item name="colorOnPrimaryContainer">@color/tip_text</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/ink</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
+        <item name="colorOutline">@color/card_stroke</item>
+        <item name="android:colorBackground">@color/bg_cream</item>
+        <item name="colorError">@color/delete_red</item>
+
+        <!-- 铺满 insets 之下，避免启动白闪 -->
+        <item name="android:windowBackground">@color/bg_cream</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+</resources>

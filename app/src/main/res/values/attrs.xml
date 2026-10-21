@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="DonutProgressView">
+        <!-- 0..1 -->
+        <attr name="donutProgress" format="float" />
+        <attr name="donutStroke" format="dimension" />
+        <attr name="donutTrackColor" format="color" />
+        <attr name="donutProgressColor" format="color" />
+        <attr name="donutCapRound" format="boolean" />
+        <attr name="donutCenterText" format="string" />
+        <attr name="donutCenterTextSize" format="dimension" />
+        <attr name="donutCenterTextColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="StackedBarView">
+        <!-- 绿（保留）部分占比，0..1，从左侧开始 -->
+        <attr name="barKeepFraction" format="float" />
+        <attr name="barKeepColor" format="color" />
+        <attr name="barDeleteColor" format="color" />
+        <attr name="barCorner" format="dimension" />
+    </declare-styleable>
+
+</resources>

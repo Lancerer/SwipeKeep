@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  范围页的一行：范围行（全部照片 / 截屏 / 相似照片 / 大视频）与月份行共用同一个布局。
+
+  为什么只有一个 item 布局而不是两个（实施计划里写的是 item_month.xml + item_scope_action.xml）：
+  两者除了「有没有推荐/智能药丸」之外结构完全相同，用 `pill` 的 GONE/VISIBLE 就能覆盖。
+  拆成两个文件意味着两套 ViewBinding 与重复的头部，而收益只是省一次 `isVisible` 判断。
+
+  置灰的 V2 行（截屏/相似照片/大视频）由适配器设 `alpha` + `isEnabled=false` + 药丸文字，
+  不在布局里写死 —— 否则「哪几行可点」这件事会散落在 XML 和 Kotlin 两处。
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rowRoot"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/row_h"
+    android:layout_marginBottom="@dimen/row_gap"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/row_corner"
+    app:cardElevation="@dimen/panel_elevation"
+    app:rippleColor="@color/card_stroke">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp">
+
+        <View
+            android:id="@+id/tile"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size"
+            android:background="@drawable/bg_scope_tile_1"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/Text.RowTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="全部照片 · 从最近开始" />
+
+            <TextView
+                android:id="@+id/subtitle"
+                style="@style/Text.RowSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                tools:text="356 张待清理" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/pill"
+            style="@style/Text.Pill"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/pill_h"
+            android:background="@drawable/bg_pill_recommend"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/pill_pad_h"
+            android:text="@string/pill_recommend"
+            android:textColor="@color/brand_orange"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/chevron"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="6dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_chevron_right"
+            app:tint="@color/divider" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

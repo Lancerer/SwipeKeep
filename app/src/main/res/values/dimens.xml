@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  数值来源：docs/产品图/*.svg。
+  设计图里手机屏幕是 378×800 单位，真机约 393dp 宽，比例 ≈ 1.04，
+  所以 SVG 的单位数可以近似 1:1 当作 dp 用。
+-->
+<resources>
+
+    <!-- 通用 -->
+    <dimen name="screen_padding_h">32dp</dimen>
+    <dimen name="screen_padding_top">24dp</dimen>
+
+    <!-- 顶部：标题 + 进度 -->
+    <dimen name="title_text">26sp</dimen>
+    <dimen name="title_underline_w">40dp</dimen>
+    <dimen name="title_underline_h">4dp</dimen>
+    <dimen name="title_underline_gap">4dp</dimen>
+    <dimen name="progress_text">13sp</dimen>
+    <dimen name="progress_gap">8dp</dimen>
+    <dimen name="progress_bar_h">6dp</dimen>
+    <dimen name="progress_bar_corner">3dp</dimen>
+    <dimen name="badge_size">20dp</dimen>
+    <dimen name="badge_text">10sp</dimen>
+    <dimen name="icon_btn_size">32dp</dimen>
+    <dimen name="icon_size">22dp</dimen>
+
+    <!-- 照片卡片（设计图 300×400，圆角 24，内图缩进 12，底部信息条 ~58） -->
+    <dimen name="card_w">300dp</dimen>
+    <dimen name="card_h">400dp</dimen>
+    <!-- 抛飞弧线：中点先往上抬 40dp 再落下，落到起点下方 80dp（设计图 02 的「先抛起再落下」） -->
+    <dimen name="swipe_arc_up">40dp</dimen>
+    <dimen name="swipe_arc_down">80dp</dimen>
+    <dimen name="card_corner">24dp</dimen>
+    <dimen name="card_stroke">1dp</dimen>
+    <dimen name="card_elevation">8dp</dimen>
+    <dimen name="card_photo_inset">12dp</dimen>
+    <dimen name="card_photo_corner">16dp</dimen>
+    <dimen name="card_caption_h">58dp</dimen>
+    <dimen name="card_caption_text">13sp</dimen>
+    <!--
+      后排卡片每层上移多少。缩放步长（每层 4%）刻意**不在这里** —— 它没有单位，
+      AAPT 会把它存成 float，而 `getDimension()` 遇到非 dimension 类型直接抛
+      `Resources$NotFoundException`（阶段 3 实测踩到）。它现在住在
+      `SwipeCardStackView.SCALE_STEP`。
+    -->
+    <dimen name="card_stack_peek_y">8dp</dimen>
+
+    <!-- 滑动手势提示。左右缩进按设计图 01 量得：屏幕 201..579，左提示起于 250 → 49dp -->
+    <dimen name="swipe_hint_text">14sp</dimen>
+    <dimen name="swipe_hint_pad_h">48dp</dimen>
+
+    <!-- 控制按钮：✕/✓ 直径 60（描边 2.5），撤销 44 -->
+    <dimen name="btn_action_size">60dp</dimen>
+    <dimen name="btn_action_stroke">2.5dp</dimen>
+    <dimen name="btn_action_icon">26dp</dimen>
+    <dimen name="btn_undo_size">44dp</dimen>
+    <dimen name="btn_undo_icon">20dp</dimen>
+    <dimen name="controls_gap">38dp</dimen>
+
+    <!-- 拖拽印章（设计图 170×66，圆角 12，4dp 描边，42sp） -->
+    <dimen name="stamp_w">170dp</dimen>
+    <dimen name="stamp_h">66dp</dimen>
+    <dimen name="stamp_corner">12dp</dimen>
+    <dimen name="stamp_stroke">4dp</dimen>
+    <dimen name="stamp_text">42sp</dimen>
+
+    <!-- 通用文案/区块 -->
+    <dimen name="section_label">16sp</dimen>
+    <dimen name="row_title">15sp</dimen>
+    <dimen name="row_subtitle">12sp</dimen>
+    <dimen name="text_secondary">13sp</dimen>
+
+    <!-- 卡片式容器（存储卡 / 范围行 / 统计卡） -->
+    <dimen name="panel_corner">20dp</dimen>
+    <dimen name="panel_elevation">6dp</dimen>
+    <dimen name="row_corner">16dp</dimen>
+    <dimen name="row_h">64dp</dimen>
+    <dimen name="row_gap">12dp</dimen>
+    <dimen name="tile_size">48dp</dimen>
+    <dimen name="tile_corner">12dp</dimen>
+
+    <!-- 小药丸标签（推荐 / 智能 / 敬请期待） -->
+    <dimen name="pill_h">20dp</dimen>
+    <dimen name="pill_corner">10dp</dimen>
+    <dimen name="pill_pad_h">10dp</dimen>
+    <dimen name="pill_text">11sp</dimen>
+
+    <!-- 存储圆环（设计图半径 28，线宽 9） -->
+    <dimen name="donut_size">56dp</dimen>
+    <dimen name="donut_stroke">9dp</dimen>
+    <dimen name="donut_center_text">13sp</dimen>
+
+    <!-- CTA -->
+    <dimen name="cta_h">56dp</dimen>
+    <dimen name="cta_corner">16dp</dimen>
+    <dimen name="cta_text">17sp</dimen>
+    <dimen name="cta_secondary_h">52dp</dimen>
+    <dimen name="cta_secondary_text">15sp</dimen>
+
+    <!-- 结算页 -->
+    <dimen name="settle_check_size">84dp</dimen>
+    <dimen name="settle_title">30sp</dimen>
+    <dimen name="settle_subtitle">14sp</dimen>
+    <dimen name="stat_card_w">98dp</dimen>
+    <dimen name="stat_card_h">92dp</dimen>
+    <dimen name="stat_card_corner">18dp</dimen>
+    <dimen name="stat_value">21sp</dimen>
+    <dimen name="stat_label">12sp</dimen>
+    <dimen name="stacked_bar_h">16dp</dimen>
+    <dimen name="legend_dot">5dp</dimen>
+    <dimen name="legend_text">13sp</dimen>
+
+    <!-- 提示条 / toast -->
+    <dimen name="tip_corner">14dp</dimen>
+    <dimen name="tip_pad_v">16dp</dimen>
+    <dimen name="tip_text">13sp</dimen>
+    <dimen name="toast_corner">20dp</dimen>
+    <dimen name="toast_h">40dp</dimen>
+    <dimen name="toast_text">14sp</dimen>
+
+</resources>

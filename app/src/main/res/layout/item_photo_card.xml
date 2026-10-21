@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  单张照片卡片的内容（设计图 01 的「front card」）。
+
+  这是 `PhotoCardView` 的内部布局，**由代码 inflate 进 MaterialCardView 本身** ——
+  所以这里没有 MaterialCardView 根节点，白底/圆角/描边/阴影都由 PhotoCardView 在 init 里设。
+
+  尺寸链（都与设计图逐项对齐）：
+    卡片 300×400，圆角 24，描边 1dp
+    内图四周缩进 12 → 276×330（= 400 - 12 - 58），圆角 16
+    底部信息条占 58
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--
+      占位底色放在容器上而不是 ImageView 上：ShapeableImageView 会自己接管背景，
+      给它设 android:background 会被清掉。容器带同一个圆角，照片盖上来之前显示的就是它。
+    -->
+    <FrameLayout
+        android:id="@+id/photoArea"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/card_photo_inset"
+        android:layout_marginTop="@dimen/card_photo_inset"
+        android:layout_marginEnd="@dimen/card_photo_inset"
+        android:layout_marginBottom="@dimen/card_caption_h"
+        android:background="@drawable/bg_photo_placeholder">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/photoImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            app:shapeAppearance="@style/ShapeAppearance.PhotoCard.Media" />
+
+        <!-- 22% 同色遮罩（色值自带 22%）。alpha 由 setStamp() 驱动，静止时不可见 -->
+        <View
+            android:id="@+id/scrim"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:background="@color/scrim_delete" />
+
+        <!-- 印章：水平居中、距内图顶 32dp、自身旋转 -6°（设计图 02） -->
+        <TextView
+            android:id="@+id/stamp"
+            style="@style/Text.Stamp"
+            android:layout_width="@dimen/stamp_w"
+            android:layout_height="@dimen/stamp_h"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="32dp"
+            android:alpha="0"
+            android:gravity="center"
+            android:rotation="-6"
+            tools:background="@drawable/bg_stamp_delete"
+            tools:text="@string/stamp_delete"
+            tools:textColor="@color/delete_red" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/caption"
+        style="@style/Text.Secondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginBottom="20dp"
+        android:ellipsize="middle"
+        android:maxLines="1"
+        tools:text="IMG_2048.jpg · 2.4 MB · 2024/05/12" />
+
+</FrameLayout>

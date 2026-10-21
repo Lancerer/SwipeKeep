@@ -1,0 +1,163 @@
+<resources>
+    <string name="app_name">留不留</string>
+
+    <!-- 滑卡主界面 -->
+    <string name="swipe_progress_format">%1$s · 已看 %2$d / %3$d 张</string>
+    <string name="hint_delete">← 左滑删除</string>
+    <string name="hint_keep">右滑保留 →</string>
+    <string name="stamp_delete">删除</string>
+    <string name="stamp_keep">保留</string>
+    <string name="cd_btn_delete">删除这张</string>
+    <string name="cd_btn_keep">保留这张</string>
+    <string name="cd_btn_undo">撤销</string>
+    <string name="cd_trash">回收站</string>
+    <string name="cd_settings">设置</string>
+    <string name="photo_meta_format">%1$s · %2$s · %3$s</string>
+
+    <!-- 范围页 -->
+    <string name="scope_storage_used">已用 %1$s / %2$s</string>
+    <string name="scope_storage_advice">相册占 %1$s，挑出不要的就能腾地方</string>
+    <string name="scope_storage_unavailable">存储信息暂不可用</string>
+    <string name="scope_pick_title">选择要清理的范围</string>
+    <string name="scope_all_photos">全部照片 · 从最近开始</string>
+    <string name="scope_all_photos_oldest">全部照片 · 从最旧开始</string>
+    <string name="scope_screenshots">截屏</string>
+    <string name="scope_similar">相似照片</string>
+    <string name="scope_videos">大视频</string>
+    <string name="scope_count_photos">%1$d 张待清理</string>
+    <!--
+      三个置灰行（V2 未实现）刻意**不写张数**：设计图里是「89 张 · 多为废片」这类文案，
+      但那个数字是编的，而一行「敬请期待」配一个假计数会让人以为功能已经在跑。
+      改成描述它将来会做什么。
+    -->
+    <string name="scope_soon_screenshots">自动挑出截图废片</string>
+    <string name="scope_soon_similar">同类只留最佳一张</string>
+    <string name="scope_soon_videos">找出占空间的大文件</string>
+    <string name="scope_month_format">%1$d 年 %2$d 月</string>
+    <string name="scope_month_unknown">未知日期</string>
+    <string name="scope_month_count">%1$d 张待清理</string>
+    <string name="scope_sort_switched">排序：%1$s</string>
+    <string name="cd_scope_sort_toggle">切换排序，当前%1$s</string>
+    <string name="pill_recommend">推荐</string>
+    <string name="pill_smart">智能</string>
+    <string name="pill_coming_soon">敬请期待</string>
+    <string name="cta_start">开始清理</string>
+    <string name="scope_empty">相册里还没有照片</string>
+    <string name="scope_settings_coming_soon">设置页还在做，下个版本见</string>
+    <!--
+      上次的待删队列（重开 App 后还在）。文案刻意说「待删除」而不是「已删除」：
+      磁盘上一个字节都没动过，用户只是标记过。全部撤销就是把这个标记抹掉，
+      不需要二次确认 —— 它什么都没破坏。
+    -->
+    <string name="scope_pending_banner">上次有 %1$d 张待删除</string>
+    <string name="scope_pending_resume">继续处理</string>
+    <string name="scope_pending_discard">全部撤销</string>
+
+    <!-- 滑卡页 -->
+    <!-- 进度行里的范围标签：月份用 scope_month_format，全部照片用这一条 -->
+    <string name="swipe_scope_all">全部照片</string>
+    <string name="swipe_empty">这个范围里没有照片</string>
+    <string name="swipe_finished">已看完 %1$d 张</string>
+    <string name="swipe_back">返回</string>
+    <!-- 看完了才出现：这时候值得看的不再是卡片，而是「这轮划出了什么」 -->
+    <string name="swipe_view_settlement">查看结算</string>
+    <!-- 划出第一张之后才出现：这个范围动不动几百上千张，得让人随时能收工 -->
+    <string name="swipe_end">结束</string>
+    <!--
+      中场激励。刻意说「已标记删除」而不是「已释放」—— 移入系统回收站只是把 IS_TRASHED 置 1，
+      字节要等系统 ~7 天后过期或用户清空回收站才真的回收（实施计划 §1 第 1 条）。
+    -->
+    <string name="swipe_milestone_format">已标记删除 %1$d 张 · 约 %2$s</string>
+
+    <!-- 结算页 -->
+    <string name="settle_title_format">%1$s清理完成！</string>
+    <string name="settle_subtitle_format">一共看完 %1$d 张，相册清爽多了</string>
+    <!--
+      提前结束（顶栏「结束」）。这两句必须与上面那对分开：
+      只看了 5 / 1000 张却说「清理完成」「相册清爽多了」，是这一页最容易撒的谎。
+      「进度已保存」是实话，而且正是用户此刻最想知道的那件事 —— 走开不白干。
+    -->
+    <string name="settle_title_paused_format">%1$s · 先清到这儿</string>
+    <string name="settle_subtitle_paused_format">已经看完 %1$d 张，进度已保存</string>
+    <string name="settle_stat_freed_label">预计释放</string>
+    <string name="settle_stat_deleted_label">删除照片</string>
+    <string name="settle_stat_kept_label">保留照片</string>
+    <string name="settle_whereabouts">本月去向</string>
+    <!--
+      标题里的范围只写「9 月」，不写「2026 年 9 月」：30sp 的标题在一行里放不下
+      「2026 年 9 月清理完成！」，而这一页是刚从那个范围里退出来的，年份是多余的上下文。
+    -->
+    <string name="settle_scope_month">%1$d 月</string>
+    <string name="settle_legend_keep">保留 %1$d%%</string>
+    <string name="settle_legend_delete">删除 %1$d%%</string>
+    <string name="settle_tip">回收站保留 7 天，删除前可随时恢复</string>
+    <!--
+      提交（阶段 6）。「已移入回收站」与「预计释放」必须分开：移入系统回收站只是把
+      IS_TRASHED 置 1，字节要等系统过期或用户彻底删除才真的回来（实施计划 §1 第 1 条）。
+    -->
+    <string name="settle_stat_freed_done">已移入回收站</string>
+    <string name="settle_cta_confirm">确认删除 %1$d 张</string>
+    <string name="settle_confirm_continue">继续处理剩余的 %1$d 张</string>
+    <string name="settle_confirm_title">确认删除？</string>
+    <string name="settle_confirm_message_single">共 %1$d 张待移入系统回收站，删除后 7 天内还可以恢复。</string>
+    <string name="settle_confirm_message_multi">共 %1$d 张待移入系统回收站，将分 %2$d 批处理，每批需你确认。</string>
+    <string name="settle_confirm_ok">继续</string>
+    <string name="settle_confirm_later">稍后再说</string>
+    <string name="settle_stopped_title">提交已停止</string>
+    <string name="settle_stopped_message">已处理 %1$d 张，还剩 %2$d 张。没提交的那些还在待删队列里，随时可以继续。</string>
+    <string name="settle_commit_unavailable">系统回收站暂时不可用，已处理的部分会保留</string>
+    <string name="settle_cta_next">继续清理</string>
+    <!-- 提前结束时的主 CTA：回滑卡页接着刚才那张往下滑，不是回范围页换个月份 -->
+    <string name="settle_cta_paused">接着滑</string>
+    <string name="settle_cta_trash">查看回收站（%1$d）</string>
+    <!-- 还没提交时不能挂张数：那批照片还不在系统回收站里 -->
+    <string name="settle_cta_trash_plain">查看回收站</string>
+
+    <!-- 回收站 -->
+    <string name="trash_title">回收站</string>
+    <string name="trash_empty">回收站是空的</string>
+    <string name="trash_count">%1$d 张</string>
+    <string name="trash_item_meta">%1$s · %2$s</string>
+    <string name="trash_tip">回收站里的照片约 7 天后被系统自动清除，期间可随时恢复</string>
+    <string name="trash_restore">恢复</string>
+    <string name="trash_delete_forever">彻底删除</string>
+    <string name="trash_restored">已恢复</string>
+    <string name="trash_action_cancelled">已取消</string>
+    <string name="trash_deleted">已彻底删除</string>
+    <string name="trash_delete_confirm_title">彻底删除？</string>
+    <string name="trash_delete_confirm_message">这 %1$d 张照片会从这个设备上永久删除，无法恢复。</string>
+    <string name="trash_action_failed">系统没有完成这个操作</string>
+    <string name="cd_back">返回</string>
+
+    <!-- 引导与权限 -->
+    <string name="onboarding_title">像刷卡片一样清理相册</string>
+    <string name="onboarding_body">左滑删除，右滑保留。\n照片只在本机处理，永不上传。</string>
+    <string name="onboarding_grant">允许访问相册</string>
+    <string name="permission_denied_title">需要相册权限</string>
+    <string name="permission_denied_body">没有相册读取权限就没法帮你挑照片。可以在系统设置里手动开启。</string>
+    <string name="permission_go_settings">前往设置</string>
+    <string name="permission_retry">重新授权</string>
+    <string name="permission_partial_banner">当前仅可访问你选择的照片</string>
+    <string name="permission_reselect">重新选择</string>
+    <string name="permission_settings_unavailable">这台设备没有应用详情页，请到系统设置里手动开启</string>
+
+    <!-- 设置 -->
+    <string name="settings_title">设置</string>
+    <string name="settings_sound">音效</string>
+    <string name="settings_haptics">震动</string>
+    <string name="settings_sort">默认排序</string>
+    <string name="settings_sort_newest">最近优先</string>
+    <string name="settings_sort_oldest">最旧优先</string>
+    <string name="settings_restore_session">启动时恢复上次未完成的清理</string>
+    <string name="settings_trash_note">系统回收站由系统管理，约 7 天后自动清除</string>
+
+    <!-- 通用 -->
+    <string name="undo_action">撤销</string>
+    <string name="common_continue">继续</string>
+    <string name="common_later">稍后再说</string>
+    <string name="common_cancel">取消</string>
+
+    <!-- 阶段 1 对照页（仅开发期使用，正常流程进不来） -->
+    <string name="styleguide_scaffold_title">留不留</string>
+    <string name="styleguide_note">阶段 1 组件对照页 · 仅开发期使用</string>
+</resources>
